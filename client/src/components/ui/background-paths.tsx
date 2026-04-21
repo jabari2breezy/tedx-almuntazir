@@ -61,11 +61,13 @@ export function BackgroundPaths({
   subtitle = "",
   buttonText = "Discover Excellence",
   onButtonClick = () => {},
+  subtitleStyle = {},
 }: {
   title?: string;
   subtitle?: string;
   buttonText?: string;
   onButtonClick?: () => void;
+  subtitleStyle?: React.CSSProperties;
 }) {
   const words = title.split(" ");
 
@@ -123,6 +125,7 @@ export function BackgroundPaths({
               style={{
                 fontFamily: "'Space Grotesk', sans-serif",
                 color: "rgba(255,255,255,0.6)",
+                ...subtitleStyle,
               }}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}

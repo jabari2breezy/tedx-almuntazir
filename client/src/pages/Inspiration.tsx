@@ -21,6 +21,7 @@ export default function Inspiration() {
         subtitle="Discover the stories of six young thinkers exploring humanity's most urgent relationship: our relationship with time."
         buttonText="Meet the Speakers"
         onButtonClick={handleCTA}
+        subtitleStyle={{ fontFamily: "'Satoshi', sans-serif" }}
       />
 
       {/* Secondary Section: Why This Matters */}
@@ -62,7 +63,7 @@ export default function Inspiration() {
 
               <p
                 className="text-white/60 text-lg leading-relaxed mb-6"
-                style={{ fontFamily: "'Cormorant Garamond', serif" }}
+                style={{ fontFamily: "'Satoshi', sans-serif" }}
               >
                 At TEDxAlMuntazirSchoolsYouth, we believe that young people have
                 the power to change the world. Our speakers aren't just sharing

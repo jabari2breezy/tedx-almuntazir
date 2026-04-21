@@ -250,7 +250,7 @@ export default function Home() {
           <div className="mb-6">
             <h1
               className="text-6xl sm:text-7xl md:text-8xl lg:text-[10rem] font-bold leading-none tracking-tight text-white"
-              style={{ fontFamily: "'Dream Orphans', serif" }}
+              style={{ fontFamily: "'Helvetica Serif', serif" }}
             >
               <AnimatedHeadline text="BORROWED" delay={0.3} />
               <br />
