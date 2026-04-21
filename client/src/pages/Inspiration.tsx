@@ -55,14 +55,14 @@ export default function Inspiration() {
 
               <h2
                 className="text-4xl lg:text-5xl font-bold text-white mb-8"
-                style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+                style={{ fontFamily: "'Coolvetica', sans-serif" }}
               >
                 Every idea begins with a spark.
               </h2>
 
               <p
                 className="text-white/60 text-lg leading-relaxed mb-6"
-                style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+                style={{ fontFamily: "'Cormorant Garamond', serif" }}
               >
                 At TEDxAlMuntazirSchoolsYouth, we believe that young people have
                 the power to change the world. Our speakers aren't just sharing
@@ -71,7 +71,7 @@ export default function Inspiration() {
 
               <p
                 className="text-white/40 text-base leading-relaxed mb-8"
-                style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+                style={{ fontFamily: "'Cormorant Garamond', serif" }}
               >
                 From exploring the weight of procrastination to reimagining our
                 future with climate action and AI, these talks challenge us to
@@ -139,13 +139,13 @@ export default function Inspiration() {
                   </div>
                   <div
                     className="text-white font-bold text-sm mb-1"
-                    style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+                    style={{ fontFamily: "'Roseblue', serif" }}
                   >
                     {stat.label}
                   </div>
                   <div
                     className="text-white/40 text-xs"
-                    style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+                    style={{ fontFamily: "'Cormorant Garamond', serif" }}
                   >
                     {stat.description}
                   </div>
@@ -198,7 +198,7 @@ export default function Inspiration() {
 
             <h2
               className="text-4xl lg:text-5xl font-bold text-white mb-8"
-              style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+              style={{ fontFamily: "'Recoleta', serif" }}
             >
               Join us for an unforgettable evening of ideas, conversation, and
               connection.
@@ -206,7 +206,7 @@ export default function Inspiration() {
 
             <p
               className="text-white/40 text-lg max-w-2xl mx-auto mb-12"
-              style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+              style={{ fontFamily: "'Cormorant Garamond', serif" }}
             >
               TEDxAlMuntazirSchoolsYouth 2026 brings together the brightest
               young minds to explore what it means to live intentionally in a

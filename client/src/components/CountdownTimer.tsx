@@ -7,8 +7,8 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-// Event date: October 15, 2026
-const EVENT_DATE = new Date("2026-10-15T09:00:00");
+// Event date: June 14, 2026
+const EVENT_DATE = new Date("2026-06-14T09:00:00");
 
 interface TimeUnit {
   value: number;

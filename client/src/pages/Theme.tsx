@@ -68,7 +68,7 @@ function RevealParagraph({
       {isQuote ? (
         <p
           className="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight"
-          style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+          style={{ fontFamily: "'Recoleta', serif" }}
         >
           {text}
         </p>
@@ -76,7 +76,7 @@ function RevealParagraph({
         <p
           className="text-2xl md:text-3xl font-bold leading-tight"
           style={{
-            fontFamily: "'Space Grotesk', sans-serif",
+            fontFamily: "'Roseblue', serif",
             color: "#EB0028",
           }}
         >
@@ -85,7 +85,7 @@ function RevealParagraph({
       ) : (
         <p
           className="text-lg md:text-xl text-white/70 leading-relaxed"
-          style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+          style={{ fontFamily: "'Cormorant Garamond', serif" }}
         >
           {text}
         </p>
@@ -175,10 +175,11 @@ export default function Theme() {
 
         {/* Layer 2: Floating large numbers */}
         <motion.div className="absolute inset-0" style={{ y: bgY2 }}>
-          <FloatingTimeElement value="∞" unit="seconds" x="-5%" y="10%" opacity={0.03} />
-          <FloatingTimeElement value="24" unit="hours" x="70%" y="30%" opacity={0.03} />
-          <FloatingTimeElement value="365" unit="days" x="20%" y="55%" opacity={0.025} />
-          <FloatingTimeElement value="2026" unit="year" x="60%" y="70%" opacity={0.03} />
+          <FloatingTimeElement value="∞" unit="seconds" x="-5%" y="10%" opacity={0.04} />
+          <FloatingTimeElement value="24" unit="hours" x="70%" y="30%" opacity={0.04} />
+          <FloatingTimeElement value="365" unit="days" x="20%" y="55%" opacity={0.035} />
+          <FloatingTimeElement value="2026" unit="year" x="60%" y="70%" opacity={0.04} />
+          <FloatingTimeElement value="14.06" unit="june" x="10%" y="80%" opacity={0.03} />
         </motion.div>
 
         {/* Layer 3: Red gradient accent */}

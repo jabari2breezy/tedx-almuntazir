@@ -12,10 +12,9 @@ import {
   useTransform,
   useInView,
 } from "framer-motion";
-import { ArrowRight, Clock, ChevronDown } from "lucide-react";
+import { ArrowRight, Clock, ChevronDown, Hourglass } from "lucide-react";
 import CountdownTimer from "@/components/CountdownTimer";
 import { GLSLHills } from "@/components/ui/glsl-hills";
-import VaporizeTextCycle, { Tag } from "@/components/ui/vaporize-text";
 import { segments } from "@/lib/data";
 
 // ── Scroll-reveal wrapper ─────────────────────────────────────
@@ -247,27 +246,20 @@ export default function Home() {
             </span>
           </motion.div>
 
-          {/* Main headline — VaporizeText Effect */}
-          <div className="mb-6 h-40 lg:h-48 flex items-center">
-            <VaporizeTextCycle
-              texts={["BORROWED TIME", "IDEAS WORTH SPREADING", "BORROWED TIME"]}
-              font={{
-                fontFamily: "'Space Grotesk', sans-serif",
-                fontSize: "120px",
-                fontWeight: 900,
-              }}
-              color="rgb(255, 255, 255)"
-              spread={6}
-              density={6}
-              animation={{
-                vaporizeDuration: 2.5,
-                fadeInDuration: 1.2,
-                waitDuration: 1,
-              }}
-              direction="left-to-right"
-              alignment="left"
-              tag={Tag.H1}
-            />
+          {/* Main headline */}
+          <div className="mb-6">
+            <h1
+              className="text-6xl sm:text-7xl md:text-8xl lg:text-[10rem] font-bold leading-none tracking-tight text-white"
+              style={{ fontFamily: "'Dream Orphans', serif" }}
+            >
+              <AnimatedHeadline text="BORROWED" delay={0.3} />
+              <br />
+              <AnimatedHeadline
+                text="TIME."
+                delay={0.5}
+                className="text-white/10"
+              />
+            </h1>
           </div>
 
           {/* Subheadline */}
@@ -295,7 +287,12 @@ export default function Home() {
               className="text-xs tracking-widest uppercase text-white/30 mb-6 flex items-center gap-2"
               style={{ fontFamily: "'IBM Plex Mono', monospace" }}
             >
-              <Clock size={12} style={{ color: "#EB0028" }} />
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+              >
+                <Hourglass size={14} style={{ color: "#EB0028" }} />
+              </motion.div>
               Time remaining until the event
             </div>
             <CountdownTimer />
