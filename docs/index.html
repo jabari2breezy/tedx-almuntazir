@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tedx Components Showcase</title>
+    <style>
+      body { font-family: -apple-system, Inter, Arial, sans-serif; margin:0; padding:0; }
+      .wrapper { max-width: 900px; margin: 40px auto; padding: 0 20px; }
+      h1 { font-size: 1.8rem; margin-bottom: 0.5rem; }
+      pre { background:#f6f6f6; padding:12px; overflow:auto; border-radius:6px; }
+      code { font-family: ui-monospace,SFMono-Regular,Monaco, Consolas, "Liberation Mono"; }
+      .card { border:1px solid #e5e7eb; padding:16px; border-radius:8px; margin-bottom:16px; }
+      a { color:#2563eb; }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <h1>Component Showcase: Background Boxes & Spooky Smoke</h1>
+      <p>This static page demonstrates how to integrate the two new components into your app. It includes usage notes and code samples.</p>
+
+      <section class="card">
+        <h2>1) Background Boxes (background-boxes.tsx)</h2>
+        <p>A lightweight animated grid background component. Place it anywhere in your UI as a React component.</p>
+        <pre><code>import { Boxes } from "@/components/ui/background-boxes";
+<br/>function MyBackground() {<br/>
+  return <Boxes className="w-full h-96" />;<br/>}</code></pre>
+      </section>
+
+      <section class="card">
+        <h2>2) Spooky Smoke Animation (spooky-smoke-animation.tsx)</h2>
+        <p>WebGL2 fragment shader-based animated background. You can tint the smoke with a color prop.</p>
+        <pre><code>import { SmokeBackground } from "@/components/ui/spooky-smoke-animation";
+<br/>function Demo() {<br/>
+  return &lt;SmokeBackground smokeColor="#FF00AA" /&gt;;<br/>}</code></pre>
+      </section>
+
+      <section class="card">
+        <h2>How to view in this repo</h2>
+        <p>Make sure the docs site is served. You can run a simple static server or use GitHub Pages to host this. The official repo URL will look like:
+        <br/>https://<your-username>.github.io/<repo-name>/</p>
+      </section>
+
+      <section class="card">
+        <h2>Files touched</h2>
+        <ul>
+          <li> client/src/components/ui/background-boxes.tsx</li>
+          <li> client/src/components/ui/spooky-smoke-animation.tsx</li>
+          <li> client/src/pages/Home.tsx (integration companion)</li>
+        </ul>
+      </section>
+    </div>
+  </body>
+  </html>
