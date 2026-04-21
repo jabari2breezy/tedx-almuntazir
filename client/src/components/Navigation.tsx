@@ -12,6 +12,7 @@ import { Menu, X } from "lucide-react";
 const navLinks = [
   { href: "/", label: "Home" },
   { href: "/theme", label: "Theme" },
+  { href: "/inspiration", label: "Inspiration" },
   { href: "/speakers", label: "Speakers" },
   { href: "/about", label: "About TED" },
 ];

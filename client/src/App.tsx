@@ -15,6 +15,7 @@ import Home from "./pages/Home";
 import Theme from "./pages/Theme";
 import Speakers from "./pages/Speakers";
 import About from "./pages/About";
+import Inspiration from "./pages/Inspiration";
 import NotFound from "./pages/NotFound";
 
 function Router() {
@@ -23,6 +24,7 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/theme" component={Theme} />
       <Route path="/speakers" component={Speakers} />
+      <Route path="/inspiration" component={Inspiration} />
       <Route path="/about" component={About} />
       <Route path="/404" component={NotFound} />
       <Route component={NotFound} />
