@@ -14,6 +14,11 @@ import {
 } from "framer-motion";
 import { ArrowRight, ArrowLeft } from "lucide-react";
 import { themeManifesto } from "@/lib/data";
+<<<<<<< HEAD
+=======
+import { BackgroundPaths } from "@/components/ui/background-paths";
+import { LayeredText } from "@/components/ui/layered-text";
+>>>>>>> 7c05b59 (feat(docs): add GitHub Pages docs site with showcase for background components and CI workflow)
 
 // ── Parallax Layer ────────────────────────────────────────────
 function ParallaxLayer({
@@ -154,6 +159,7 @@ export default function Theme() {
       className="min-h-screen relative"
       style={{ background: "#000000" }}
     >
+<<<<<<< HEAD
       {/* ── PARALLAX BACKGROUND ─────────────────────────── */}
       <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
         {/* Layer 1: Main background image */}
@@ -196,6 +202,11 @@ export default function Theme() {
             style={{ background: "rgba(235, 0, 40, 0.03)" }}
           />
         </motion.div>
+=======
+      {/* ── CINEMATIC BACKGROUND ─────────────────────────── */}
+      <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
+        <BackgroundPaths title="" subtitle="" />
+>>>>>>> 7c05b59 (feat(docs): add GitHub Pages docs site with showcase for background components and CI workflow)
       </div>
 
       {/* ── CONTENT ─────────────────────────────────────── */}
@@ -241,6 +252,7 @@ export default function Theme() {
             </span>
           </motion.div>
 
+<<<<<<< HEAD
           {/* Title */}
           <motion.h1
             className="text-7xl sm:text-8xl md:text-9xl lg:text-[12rem] font-bold text-white leading-none tracking-tight mb-8"
@@ -253,6 +265,22 @@ export default function Theme() {
             <br />
             <span style={{ color: "#EB0028" }}>Time.</span>
           </motion.h1>
+=======
+          {/* Layered Reveal Title */}
+          <div className="mb-12">
+            <LayeredText 
+              fontSize="clamp(3rem, 10vw, 8rem)"
+              lineHeight={100}
+              className="text-white select-none"
+              lines={[
+                { top: "\u00A0", bottom: "BORROWED" },
+                { top: "BORROWED", bottom: "TIME." },
+                { top: "TIME.", bottom: "2026" },
+                { top: "2026", bottom: "\u00A0" },
+              ]}
+            />
+          </div>
+>>>>>>> 7c05b59 (feat(docs): add GitHub Pages docs site with showcase for background components and CI workflow)
 
           {/* Subtitle */}
           <motion.p

@@ -218,7 +218,11 @@ export default defineConfig({
   envDir: path.resolve(import.meta.dirname),
   root: path.resolve(import.meta.dirname, "client"),
   build: {
+<<<<<<< HEAD
     outDir: path.resolve(import.meta.dirname, "dist/public"),
+=======
+    outDir: path.resolve(import.meta.dirname, "docs"),
+>>>>>>> 7c05b59 (feat(docs): add GitHub Pages docs site with showcase for background components and CI workflow)
     emptyOutDir: true,
   },
   server: {

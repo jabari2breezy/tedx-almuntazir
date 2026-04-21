@@ -16,6 +16,12 @@ import { ArrowRight, Clock, ChevronDown, Hourglass } from "lucide-react";
 import CountdownTimer from "@/components/CountdownTimer";
 import { GLSLHills } from "@/components/ui/glsl-hills";
 import { segments } from "@/lib/data";
+<<<<<<< HEAD
+=======
+import { TemporalShader } from "@/components/ui/TemporalShader";
+import { VerticalTabs } from "@/components/ui/vertical-tabs";
+import { SmokeBackground } from "@/components/ui/spooky-smoke-animation";
+>>>>>>> 7c05b59 (feat(docs): add GitHub Pages docs site with showcase for background components and CI workflow)
 
 // ── Scroll-reveal wrapper ─────────────────────────────────────
 function RevealOnScroll({
@@ -204,14 +210,26 @@ export default function Home() {
 
   return (
     <div className="min-h-screen" style={{ background: "#000000" }}>
+<<<<<<< HEAD
+=======
+      {/* Background animations for the Home page */}
+      <div className="absolute inset-0 -z-20 pointer-events-none">
+        <SmokeBackground smokeColor="#808080" />
+      </div>
+>>>>>>> 7c05b59 (feat(docs): add GitHub Pages docs site with showcase for background components and CI workflow)
       {/* ── HERO SECTION ──────────────────────────────────── */}
       <section
         ref={heroRef}
         className="relative min-h-screen flex flex-col justify-center overflow-hidden"
       >
         {/* 3D WebGL Hills Background */}
+<<<<<<< HEAD
         <div className="absolute inset-0 z-0">
           <GLSLHills width="100%" height="100%" cameraZ={125} speed={0.3} />
+=======
+        <div className="absolute inset-0 z-0 overflow-hidden">
+          <TemporalShader className="opacity-60" speed={0.4} />
+>>>>>>> 7c05b59 (feat(docs): add GitHub Pages docs site with showcase for background components and CI workflow)
           {/* Dark overlay for text readability */}
           <div
             className="absolute inset-0"
@@ -500,6 +518,7 @@ export default function Home() {
       </motion.div>
 
       {/* ── THREE SEGMENTS SECTION ────────────────────────── */}
+<<<<<<< HEAD
       <section className="py-24 lg:py-32">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           {/* Section header */}
@@ -538,6 +557,10 @@ export default function Home() {
             ))}
           </div>
         </div>
+=======
+      <section className="bg-black">
+        <VerticalTabs />
+>>>>>>> 7c05b59 (feat(docs): add GitHub Pages docs site with showcase for background components and CI workflow)
       </section>
 
       {/* ── QUOTE SECTION ─────────────────────────────────── */}

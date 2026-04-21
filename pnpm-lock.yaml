@@ -19,6 +19,15 @@ importers:
       '@hookform/resolvers':
         specifier: ^5.2.2
         version: 5.2.2(react-hook-form@7.64.0(react@19.2.1))
+<<<<<<< HEAD
+=======
+      '@hugeicons/core-free-icons':
+        specifier: ^4.1.1
+        version: 4.1.1
+      '@hugeicons/react':
+        specifier: ^1.1.6
+        version: 1.1.6(react@19.2.1)
+>>>>>>> 7c05b59 (feat(docs): add GitHub Pages docs site with showcase for background components and CI workflow)
       '@radix-ui/react-accordion':
         specifier: ^1.2.12
         version: 1.2.12(@types/react-dom@19.2.1(@types/react@19.2.1))(@types/react@19.2.1)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
@@ -118,6 +127,12 @@ importers:
       framer-motion:
         specifier: ^12.23.22
         version: 12.23.22(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
+<<<<<<< HEAD
+=======
+      gsap:
+        specifier: ^3.15.0
+        version: 3.15.0
+>>>>>>> 7c05b59 (feat(docs): add GitHub Pages docs site with showcase for background components and CI workflow)
       input-otp:
         specifier: ^1.4.2
         version: 1.4.2(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
@@ -684,6 +699,17 @@ packages:
     peerDependencies:
       react-hook-form: ^7.55.0
 
+<<<<<<< HEAD
+=======
+  '@hugeicons/core-free-icons@4.1.1':
+    resolution: {integrity: sha512-teqIBvPHl90ygIwKyJwTxOH8aNp1X1PjDTcMvLkEwdPxPD+8mssrZ5kXKIAJJFYPsz69a8LYQY0UPid4PAdavg==}
+
+  '@hugeicons/react@1.1.6':
+    resolution: {integrity: sha512-c2LhXJMAW5wN1pC/smBXG0YPqUON6ceR/ZdXHCjEI9KvB+hjtqYjmzIxok5hAQOeXGz0WtORgCQMzqewFKAZwg==}
+    peerDependencies:
+      react: '>=16.0.0'
+
+>>>>>>> 7c05b59 (feat(docs): add GitHub Pages docs site with showcase for background components and CI workflow)
   '@iconify/types@2.0.0':
     resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
 
@@ -2399,6 +2425,12 @@ packages:
   graceful-fs@4.2.11:
     resolution: {integrity: sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==}
 
+<<<<<<< HEAD
+=======
+  gsap@3.15.0:
+    resolution: {integrity: sha512-dMW4CWBTUK1AEEDeZc1g4xpPGIrSf9fJF960qbTZmN/QwZIWY5wgliS6JWl9/25fpTGJrMRtSjGtOmPnfjZB+A==}
+
+>>>>>>> 7c05b59 (feat(docs): add GitHub Pages docs site with showcase for background components and CI workflow)
   hachure-fill@0.5.2:
     resolution: {integrity: sha512-3GKBOn+m2LX9iq+JC1064cSFprJY4jL1jCXTcpnfER5HYE2l/4EfWSGzkPa/ZDBmYI0ZOEj5VHV/eKnPGkHuOg==}
 
@@ -3891,6 +3923,15 @@ snapshots:
       '@standard-schema/utils': 0.3.0
       react-hook-form: 7.64.0(react@19.2.1)
 
+<<<<<<< HEAD
+=======
+  '@hugeicons/core-free-icons@4.1.1': {}
+
+  '@hugeicons/react@1.1.6(react@19.2.1)':
+    dependencies:
+      react: 19.2.1
+
+>>>>>>> 7c05b59 (feat(docs): add GitHub Pages docs site with showcase for background components and CI workflow)
   '@iconify/types@2.0.0': {}
 
   '@iconify/utils@3.0.2':
@@ -5721,6 +5762,11 @@ snapshots:
 
   graceful-fs@4.2.11: {}
 
+<<<<<<< HEAD
+=======
+  gsap@3.15.0: {}
+
+>>>>>>> 7c05b59 (feat(docs): add GitHub Pages docs site with showcase for background components and CI workflow)
   hachure-fill@0.5.2: {}
 
   has-symbols@1.1.0: {}

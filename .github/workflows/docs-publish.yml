@@ -1,0 +1,22 @@
+name: Publish Docs to GitHub Pages
+on:
+  push:
+    branches: [ main, master ]
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - name: Install serve to preview
+        run: npm install -g http-server
+      - name: Build docs (no build step needed, copy docs)
+        run: |
+          echo "Docs site ready. No build step required; serving docs/ works."
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs
