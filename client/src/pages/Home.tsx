@@ -14,6 +14,7 @@ import {
 } from "framer-motion";
 import { ArrowRight, Clock, ChevronDown } from "lucide-react";
 import CountdownTimer from "@/components/CountdownTimer";
+import { GLSLHills } from "@/components/ui/glsl-hills";
 import { segments } from "@/lib/data";
 
 // ── Scroll-reveal wrapper ─────────────────────────────────────
@@ -208,26 +209,18 @@ export default function Home() {
         ref={heroRef}
         className="relative min-h-screen flex flex-col justify-center overflow-hidden"
       >
-        {/* Background image with parallax */}
-        <motion.div
-          className="absolute inset-0 z-0"
-          style={{ y: heroY }}
-        >
-          <img
-            src="https://d2xsxph8kpxj0f.cloudfront.net/310519663582999684/647iubpgwR3y9bf7h3fhHY/tedx-hero-bg-msQFNAaktUDUzw6fc8zNKy.webp"
-            alt=""
-            className="w-full h-full object-cover"
-            style={{ opacity: 0.6 }}
-          />
-          {/* Dark overlay */}
+        {/* 3D WebGL Hills Background */}
+        <div className="absolute inset-0 z-0">
+          <GLSLHills width="100%" height="100%" cameraZ={125} speed={0.3} />
+          {/* Dark overlay for text readability */}
           <div
             className="absolute inset-0"
             style={{
               background:
-                "linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.9) 100%)",
+                "linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.6) 50%, rgba(0,0,0,0.95) 100%)",
             }}
           />
-        </motion.div>
+        </div>
 
         {/* Content */}
         <motion.div
@@ -340,7 +333,7 @@ export default function Home() {
             className="text-white/20 text-xs tracking-widest uppercase"
             style={{ fontFamily: "'IBM Plex Mono', monospace" }}
           >
-            Scroll
+            Scroll to explore
           </span>
           <motion.div
             animate={{ y: [0, 8, 0] }}
@@ -485,9 +478,21 @@ export default function Home() {
       </section>
 
       {/* ── RED DIVIDER ───────────────────────────────────── */}
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="h-px" style={{ background: "rgba(235, 0, 40, 0.2)" }} />
-      </div>
+      <motion.div
+        className="max-w-7xl mx-auto px-6 lg:px-8"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+      >
+        <motion.div
+          className="h-px"
+          style={{ background: "rgba(235, 0, 40, 0.2)" }}
+          initial={{ scaleX: 0 }}
+          whileInView={{ scaleX: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+        />
+      </motion.div>
 
       {/* ── THREE SEGMENTS SECTION ────────────────────────── */}
       <section className="py-24 lg:py-32">
