@@ -18,7 +18,7 @@ const socialLinks = [
   { icon: Twitter, label: "Twitter", href: "#" },
   { icon: Instagram, label: "Instagram", href: "#" },
   { icon: Youtube, label: "YouTube", href: "#" },
-  { icon: Mail, label: "Email", href: "mailto:info@tedxalmuntazir.com" },
+  { icon: Mail, label: "Email", href: "mailto:tedxalmuntazirschoolsyouth@gmail.com" },
 ];
 
 export default function Footer() {
@@ -153,11 +153,11 @@ export default function Footer() {
                   Contact
                 </div>
                 <a
-                  href="mailto:info@tedxalmuntazir.com"
+                  href="mailto:tedxalmuntazirschoolsyouth@gmail.com"
                   className="text-sm transition-colors duration-200"
                   style={{ color: "#EB0028", fontFamily: "'Space Grotesk', sans-serif" }}
                 >
-                  info@tedxalmuntazir.com
+                  tedxalmuntazirschoolsyouth@gmail.com
                 </a>
               </div>
             </div>

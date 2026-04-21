@@ -15,6 +15,7 @@ import {
 import { ArrowRight, Clock, ChevronDown } from "lucide-react";
 import CountdownTimer from "@/components/CountdownTimer";
 import { GLSLHills } from "@/components/ui/glsl-hills";
+import VaporizeTextCycle, { Tag } from "@/components/ui/vaporize-text";
 import { segments } from "@/lib/data";
 
 // ── Scroll-reveal wrapper ─────────────────────────────────────
@@ -246,20 +247,27 @@ export default function Home() {
             </span>
           </motion.div>
 
-          {/* Main headline */}
-          <div className="mb-6">
-            <h1
-              className="text-6xl sm:text-7xl md:text-8xl lg:text-[10rem] font-bold leading-none tracking-tight text-white"
-              style={{ fontFamily: "'Space Grotesk', sans-serif" }}
-            >
-              <AnimatedHeadline text="BORROWED" delay={0.3} />
-              <br />
-              <AnimatedHeadline
-                text="TIME."
-                delay={0.5}
-                className="text-white/10"
-              />
-            </h1>
+          {/* Main headline — VaporizeText Effect */}
+          <div className="mb-6 h-40 lg:h-48 flex items-center">
+            <VaporizeTextCycle
+              texts={["BORROWED TIME", "IDEAS WORTH SPREADING", "BORROWED TIME"]}
+              font={{
+                fontFamily: "'Space Grotesk', sans-serif",
+                fontSize: "120px",
+                fontWeight: 900,
+              }}
+              color="rgb(255, 255, 255)"
+              spread={6}
+              density={6}
+              animation={{
+                vaporizeDuration: 2.5,
+                fadeInDuration: 1.2,
+                waitDuration: 1,
+              }}
+              direction="left-to-right"
+              alignment="left"
+              tag={Tag.H1}
+            />
           </div>
 
           {/* Subheadline */}
