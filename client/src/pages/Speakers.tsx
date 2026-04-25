@@ -419,7 +419,9 @@ export default function Speakers() {
   const [savedSpeakerIds, setSavedSpeakerIds] = useState<string[]>([]);
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
+    const hash = window.location.hash || "";
+    const hashQuery = hash.includes("?") ? hash.slice(hash.indexOf("?")) : "";
+    const params = new URLSearchParams(hashQuery || window.location.search);
     const segment = params.get("segment");
     if (segment && segments.some((item) => item.id === segment)) {
       setActiveSegment(segment);

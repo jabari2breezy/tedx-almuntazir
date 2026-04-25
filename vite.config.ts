@@ -208,12 +208,37 @@ function vitePluginSpaFallback(): Plugin {
     name: "spa-404-fallback",
     closeBundle() {
       const docsDir = path.join(PROJECT_ROOT, "docs");
-      const indexPath = path.join(docsDir, "index.html");
       const notFoundPath = path.join(docsDir, "404.html");
+      const noJekyllPath = path.join(docsDir, ".nojekyll");
+      const redirectHtml = `<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Redirecting...</title>
+    <script>
+      (function () {
+        var repoBase = "/tedx-almuntazir";
+        var path = window.location.pathname || "/";
+        var search = window.location.search || "";
+        var hash = window.location.hash || "";
+        var route = path.indexOf(repoBase) === 0 ? path.slice(repoBase.length) : path;
 
-      if (fs.existsSync(indexPath)) {
-        fs.copyFileSync(indexPath, notFoundPath);
-      }
+        if (!route || route === "/") {
+          window.location.replace(repoBase + "/" + hash);
+          return;
+        }
+
+        window.location.replace(repoBase + "/#" + route + search + hash);
+      })();
+    </script>
+  </head>
+  <body></body>
+</html>
+`;
+
+      fs.writeFileSync(notFoundPath, redirectHtml, "utf-8");
+      fs.writeFileSync(noJekyllPath, "", "utf-8");
     },
   };
 }

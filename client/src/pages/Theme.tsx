@@ -14,11 +14,8 @@ import {
 } from "framer-motion";
 import { ArrowRight, ArrowLeft } from "lucide-react";
 import { themeManifesto } from "@/lib/data";
-<<<<<<< HEAD
 import { BackgroundPaths } from "@/components/ui/background-paths";
 import { LayeredText } from "@/components/ui/layered-text";
-=======
->>>>>>> origin/main
 
 // ── Parallax Layer ────────────────────────────────────────────
 function ParallaxLayer({
@@ -141,15 +138,8 @@ function FloatingTimeElement({
 // ── Main Theme Page ───────────────────────────────────────────
 export default function Theme() {
   const pageRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: pageRef });
-
-  // Parallax transforms for background layers
-  const bgY1 = useTransform(scrollYProgress, [0, 1], ["0%", "25%"]);
-  const bgY2 = useTransform(scrollYProgress, [0, 1], ["0%", "15%"]);
-  const bgY3 = useTransform(scrollYProgress, [0, 1], ["0%", "40%"]);
 
   // Determine which paragraphs get special treatment
-  const specialIndices = [0, 4, 8, 11]; // "None of us...", "So what...", "But here...", "What will you..."
   const quoteIndices = [0, 4, 8, 11];
   const largeIndices = [2, 6, 10];
 
@@ -159,54 +149,9 @@ export default function Theme() {
       className="min-h-screen relative"
       style={{ background: "#000000" }}
     >
-<<<<<<< HEAD
       {/* ── CINEMATIC BACKGROUND ─────────────────────────── */}
       <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
         <BackgroundPaths title="" subtitle="" />
-=======
-      {/* ── PARALLAX BACKGROUND ─────────────────────────── */}
-      <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
-        {/* Layer 1: Main background image */}
-        <motion.div className="absolute inset-0" style={{ y: bgY1 }}>
-          <img
-            src="https://d2xsxph8kpxj0f.cloudfront.net/310519663582999684/647iubpgwR3y9bf7h3fhHY/tedx-theme-parallax-X7t9VCnTjkChuZwwfrvxBa.webp"
-            alt=""
-            className="w-full h-full object-cover"
-            style={{ opacity: 0.25, transform: "scale(1.2)" }}
-          />
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                "linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.8) 100%)",
-            }}
-          />
-        </motion.div>
-
-        {/* Layer 2: Floating large numbers */}
-        <motion.div className="absolute inset-0" style={{ y: bgY2 }}>
-          <FloatingTimeElement value="∞" unit="seconds" x="-5%" y="10%" opacity={0.04} />
-          <FloatingTimeElement value="24" unit="hours" x="70%" y="30%" opacity={0.04} />
-          <FloatingTimeElement value="365" unit="days" x="20%" y="55%" opacity={0.035} />
-          <FloatingTimeElement value="2026" unit="year" x="60%" y="70%" opacity={0.04} />
-          <FloatingTimeElement value="14.06" unit="june" x="10%" y="80%" opacity={0.03} />
-        </motion.div>
-
-        {/* Layer 3: Red gradient accent */}
-        <motion.div
-          className="absolute inset-0"
-          style={{ y: bgY3 }}
-        >
-          <div
-            className="absolute top-1/3 left-0 w-96 h-96 rounded-full blur-3xl"
-            style={{ background: "rgba(235, 0, 40, 0.04)" }}
-          />
-          <div
-            className="absolute bottom-1/4 right-0 w-80 h-80 rounded-full blur-3xl"
-            style={{ background: "rgba(235, 0, 40, 0.03)" }}
-          />
-        </motion.div>
->>>>>>> origin/main
       </div>
 
       {/* ── CONTENT ─────────────────────────────────────── */}
@@ -252,7 +197,6 @@ export default function Theme() {
             </span>
           </motion.div>
 
-<<<<<<< HEAD
           {/* Layered Reveal Title */}
           <div className="mb-12">
             <LayeredText 
@@ -267,20 +211,6 @@ export default function Theme() {
               ]}
             />
           </div>
-=======
-          {/* Title */}
-          <motion.h1
-            className="text-7xl sm:text-8xl md:text-9xl lg:text-[12rem] font-bold text-white leading-none tracking-tight mb-8"
-            style={{ fontFamily: "'Space Grotesk', sans-serif" }}
-            initial={{ opacity: 0, y: 60 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
-          >
-            Borrowed
-            <br />
-            <span style={{ color: "#EB0028" }}>Time.</span>
-          </motion.h1>
->>>>>>> origin/main
 
           {/* Subtitle */}
           <motion.p
