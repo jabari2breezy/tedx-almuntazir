@@ -1,9 +1,3 @@
-/**
- * Navigation — Sticky glassmorphism header
- * Design: Neo-Brutalist Editorial | TEDx brand colors
- * Behavior: Transparent on top, glass on scroll
- */
-
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
@@ -44,22 +38,21 @@ export default function Navigation() {
       >
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 lg:h-20">
-            {/* Logo */}
             <Link href="/">
               <motion.div
-                className="flex items-center gap-3 group"
+                className="group flex items-center gap-3"
                 whileHover={{ scale: 1.02 }}
                 transition={{ duration: 0.2 }}
               >
                 <div className="flex items-center gap-1">
                   <span
-                    className="text-white font-display text-xl lg:text-2xl font-bold tracking-tight"
+                    className="font-display text-xl font-bold tracking-tight text-white lg:text-2xl"
                     style={{ fontFamily: "'Space Grotesk', sans-serif" }}
                   >
                     TED
                   </span>
                   <span
-                    className="text-white font-display text-xl lg:text-2xl font-bold"
+                    className="font-display text-xl font-bold text-white lg:text-2xl"
                     style={{
                       fontFamily: "'Space Grotesk', sans-serif",
                       color: "#EB0028",
@@ -70,13 +63,13 @@ export default function Navigation() {
                 </div>
                 <div className="hidden sm:block">
                   <div
-                    className="text-white/90 text-xs font-medium tracking-widest uppercase"
+                    className="text-xs font-medium uppercase tracking-widest text-white/90"
                     style={{ fontFamily: "'IBM Plex Mono', monospace" }}
                   >
                     AlMuntazirSchoolsYouth
                   </div>
                   <div
-                    className="text-white/40 text-xs tracking-widest"
+                    className="text-xs tracking-widest text-white/40"
                     style={{ fontFamily: "'IBM Plex Mono', monospace" }}
                   >
                     2026
@@ -85,17 +78,19 @@ export default function Navigation() {
               </motion.div>
             </Link>
 
-            {/* Desktop Nav */}
             <nav className="hidden md:flex items-center gap-8">
               {navLinks.map((link) => (
                 <Link key={link.href} href={link.href}>
                   <motion.span
-                    className={`relative text-sm font-medium tracking-widest uppercase transition-colors duration-200 ${
+                    className={`relative text-sm font-medium uppercase tracking-widest transition-colors duration-200 ${
                       location === link.href
                         ? "text-white"
                         : "text-white/50 hover:text-white"
                     }`}
-                    style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.7rem" }}
+                    style={{
+                      fontFamily: "'IBM Plex Mono', monospace",
+                      fontSize: "0.7rem",
+                    }}
                     whileHover={{ y: -1 }}
                   >
                     {link.label}
@@ -117,12 +112,11 @@ export default function Navigation() {
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.97 }}
                 >
-                  Get Tickets
+                  Explore Program
                 </motion.button>
               </Link>
             </nav>
 
-            {/* Mobile Menu Button */}
             <button
               className="md:hidden text-white p-2"
               onClick={() => setMobileOpen(!mobileOpen)}
@@ -134,7 +128,6 @@ export default function Navigation() {
         </div>
       </motion.header>
 
-      {/* Mobile Menu */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
@@ -152,36 +145,30 @@ export default function Navigation() {
               >
                 TED<span style={{ color: "#EB0028" }}>x</span>
               </span>
-              <button
-                className="text-white p-2"
-                onClick={() => setMobileOpen(false)}
-              >
+              <button className="text-white p-2" onClick={() => setMobileOpen(false)}>
                 <X size={22} />
               </button>
             </div>
 
-            <div
-              className="h-px w-full"
-              style={{ background: "#EB0028" }}
-            />
+            <div className="h-px w-full" style={{ background: "#EB0028" }} />
 
-            <nav className="flex flex-col px-6 pt-12 gap-8">
+            <nav className="flex flex-col gap-8 px-6 pt-12">
               {navLinks.map((link, i) => (
                 <Link key={link.href} href={link.href}>
                   <motion.div
-                    className="flex items-center gap-4 group"
+                    className="group flex items-center gap-4"
                     initial={{ opacity: 0, x: 40 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: i * 0.08, duration: 0.4 }}
                   >
                     <span
-                      className="text-white/30 text-xs font-mono"
+                      className="text-xs text-white/30"
                       style={{ fontFamily: "'IBM Plex Mono', monospace" }}
                     >
                       0{i + 1}
                     </span>
                     <span
-                      className="text-white text-3xl font-bold group-hover:text-[#EB0028] transition-colors"
+                      className="text-3xl font-bold text-white transition-colors group-hover:text-[#EB0028]"
                       style={{ fontFamily: "'Space Grotesk', sans-serif" }}
                     >
                       {link.label}
@@ -193,11 +180,14 @@ export default function Navigation() {
 
             <div className="mt-auto px-6 pb-12">
               <div
-                className="text-white/20 text-xs"
+                className="mb-4 text-xs text-white/20"
                 style={{ fontFamily: "'IBM Plex Mono', monospace" }}
               >
-                BORROWED TIME — 2026
+                BORROWED TIME - 2026
               </div>
+              <Link href="/speakers">
+                <button className="btn-ted w-full">Explore Program</button>
+              </Link>
             </div>
           </motion.div>
         )}

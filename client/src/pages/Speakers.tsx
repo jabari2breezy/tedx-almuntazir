@@ -1,12 +1,16 @@
-/**
- * Speakers Page — Dynamic 3-Segment Timeline
- * Design: Tab system (Past/Present/Future), speaker cards with dialog
- * Interaction: Click card → Shadcn Dialog with full bio and talk description
- */
-
-import { useState, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
-import { ArrowLeft, Clock, Users, Mic, X, ChevronRight } from "lucide-react";
+import {
+  ArrowLeft,
+  Bookmark,
+  BookmarkCheck,
+  ChevronRight,
+  Clock,
+  Mic,
+  Search,
+  Users,
+  X,
+} from "lucide-react";
 import { Link } from "wouter";
 import {
   Dialog,
@@ -16,7 +20,8 @@ import {
 } from "@/components/ui/dialog";
 import { speakers, segments, type Speaker } from "@/lib/data";
 
-// ── Speaker Avatar ────────────────────────────────────────────
+const FAVORITES_STORAGE_KEY = "tedx-almuntazir-saved-speakers";
+
 function SpeakerAvatar({
   speaker,
   size = "md",
@@ -49,15 +54,49 @@ function SpeakerAvatar({
   );
 }
 
-// ── Speaker Card ──────────────────────────────────────────────
+function SaveButton({
+  saved,
+  onClick,
+}: {
+  saved: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      className="flex items-center gap-2 px-3 py-2 text-[11px] uppercase tracking-widest transition-colors"
+      style={{
+        fontFamily: "'IBM Plex Mono', monospace",
+        color: saved ? "#EB0028" : "rgba(255,255,255,0.45)",
+        border: saved
+          ? "1px solid rgba(235, 0, 40, 0.35)"
+          : "1px solid rgba(255,255,255,0.1)",
+        background: saved ? "rgba(235,0,40,0.08)" : "rgba(255,255,255,0.02)",
+      }}
+      onClick={(event) => {
+        event.stopPropagation();
+        onClick();
+      }}
+      aria-label={saved ? "Remove from shortlist" : "Save to shortlist"}
+    >
+      {saved ? <BookmarkCheck size={13} /> : <Bookmark size={13} />}
+      {saved ? "Saved" : "Save"}
+    </button>
+  );
+}
+
 function SpeakerCard({
   speaker,
   index,
+  saved,
   onClick,
+  onToggleSave,
 }: {
   speaker: Speaker;
   index: number;
+  saved: boolean;
   onClick: () => void;
+  onToggleSave: () => void;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-40px" });
@@ -69,12 +108,12 @@ function SpeakerCard({
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{
         duration: 0.6,
-        delay: index * 0.1,
+        delay: index * 0.08,
         ease: [0.25, 0.46, 0.45, 0.94],
       }}
     >
       <motion.div
-        className="speaker-card p-6 lg:p-8 cursor-pointer relative overflow-hidden group"
+        className="speaker-card group relative cursor-pointer overflow-hidden p-6 lg:p-8"
         style={{
           background: "rgba(255,255,255,0.02)",
           borderRadius: "2px",
@@ -83,19 +122,17 @@ function SpeakerCard({
         whileHover={{ y: -4 }}
         transition={{ duration: 0.3 }}
       >
-        {/* Hover red glow */}
         <div
-          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none"
+          className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-400 group-hover:opacity-100"
           style={{
             background:
               "radial-gradient(ellipse at top left, rgba(235,0,40,0.06) 0%, transparent 70%)",
           }}
         />
 
-        {/* Placeholder badge */}
         {speaker.isPlaceholder && (
           <div
-            className="absolute top-4 right-4 text-xs px-2 py-1 tracking-widest uppercase"
+            className="absolute top-4 right-4 px-2 py-1 text-xs uppercase tracking-widest"
             style={{
               fontFamily: "'IBM Plex Mono', monospace",
               color: "rgba(255,255,255,0.2)",
@@ -107,10 +144,9 @@ function SpeakerCard({
           </div>
         )}
 
-        {/* Alumni badge */}
-        {speaker.isAlumni && (
+        {speaker.isAlumni && !speaker.isPlaceholder && (
           <div
-            className="absolute top-4 right-4 text-xs px-2 py-1 tracking-widest uppercase"
+            className="absolute top-4 right-4 px-2 py-1 text-xs uppercase tracking-widest"
             style={{
               fontFamily: "'IBM Plex Mono', monospace",
               color: "#EB0028",
@@ -127,59 +163,58 @@ function SpeakerCard({
           <SpeakerAvatar speaker={speaker} size="md" />
 
           <div className="flex-1 min-w-0">
-            {/* Topic tag */}
             <div
-              className="text-xs tracking-widest uppercase mb-2"
+              className="mb-2 text-xs uppercase tracking-widest"
               style={{
                 fontFamily: "'IBM Plex Mono', monospace",
-                color: speaker.isPlaceholder
-                  ? "rgba(255,255,255,0.2)"
-                  : "#EB0028",
+                color: speaker.isPlaceholder ? "rgba(255,255,255,0.2)" : "#EB0028",
               }}
             >
               {speaker.topic}
             </div>
 
-            {/* Name */}
             <h3
-              className="text-xl font-bold text-white mb-1 leading-tight"
+              className="mb-1 text-xl font-bold leading-tight text-white"
               style={{ fontFamily: "'Space Grotesk', sans-serif" }}
             >
               {speaker.name}
             </h3>
 
-            {/* Talk title */}
             <p
-              className="text-white/40 text-sm leading-snug mb-4"
+              className="mb-4 text-sm leading-snug text-white/40"
               style={{ fontFamily: "'Space Grotesk', sans-serif" }}
             >
               "{speaker.talkTitle}"
             </p>
 
-            {/* Read more */}
-            <div
-              className="flex items-center gap-2 text-white/30 group-hover:text-white/60 transition-colors duration-300"
-              style={{
-                fontFamily: "'IBM Plex Mono', monospace",
-                fontSize: "0.65rem",
-              }}
-            >
-              <span className="tracking-widest uppercase">
-                {speaker.isPlaceholder ? "Details TBA" : "Read Bio"}
-              </span>
+            <div className="flex flex-wrap items-center gap-3">
+              <div
+                className="group-hover:text-white/60 flex items-center gap-2 text-white/30 transition-colors duration-300"
+                style={{
+                  fontFamily: "'IBM Plex Mono', monospace",
+                  fontSize: "0.65rem",
+                }}
+              >
+                <span className="uppercase tracking-widest">
+                  {speaker.isPlaceholder ? "Details TBA" : "Read Bio"}
+                </span>
+                {!speaker.isPlaceholder && (
+                  <ChevronRight
+                    size={10}
+                    className="transition-transform duration-300 group-hover:translate-x-1"
+                  />
+                )}
+              </div>
+
               {!speaker.isPlaceholder && (
-                <ChevronRight
-                  size={10}
-                  className="group-hover:translate-x-1 transition-transform duration-300"
-                />
+                <SaveButton saved={saved} onClick={onToggleSave} />
               )}
             </div>
           </div>
         </div>
 
-        {/* Bottom red line — animates on hover */}
         <div
-          className="absolute bottom-0 left-0 h-px w-0 group-hover:w-full transition-all duration-500"
+          className="absolute bottom-0 left-0 h-px w-0 transition-all duration-500 group-hover:w-full"
           style={{ background: "#EB0028" }}
         />
       </motion.div>
@@ -187,25 +222,27 @@ function SpeakerCard({
   );
 }
 
-// ── Speaker Dialog ────────────────────────────────────────────
 function SpeakerDialog({
   speaker,
   open,
+  saved,
   onClose,
+  onToggleSave,
 }: {
   speaker: Speaker | null;
   open: boolean;
+  saved: boolean;
   onClose: () => void;
+  onToggleSave: () => void;
 }) {
   if (!speaker) return null;
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent
-        className="max-w-2xl border-0 p-0 overflow-hidden"
+        className="max-w-2xl overflow-hidden border-0 p-0"
         style={{ background: "#0A0A0A", borderRadius: "2px" }}
       >
-        {/* Red top bar */}
         <div className="h-1 w-full" style={{ background: "#EB0028" }} />
 
         <div className="p-8 lg:p-10">
@@ -213,9 +250,8 @@ function SpeakerDialog({
             <div className="flex items-start gap-6">
               <SpeakerAvatar speaker={speaker} size="lg" />
               <div className="flex-1">
-                {/* Topic */}
                 <div
-                  className="text-xs tracking-widest uppercase mb-3"
+                  className="mb-3 text-xs uppercase tracking-widest"
                   style={{
                     fontFamily: "'IBM Plex Mono', monospace",
                     color: "#EB0028",
@@ -228,14 +264,14 @@ function SpeakerDialog({
                 </div>
 
                 <DialogTitle
-                  className="text-2xl lg:text-3xl font-bold text-white mb-2"
+                  className="mb-2 text-2xl font-bold text-white lg:text-3xl"
                   style={{ fontFamily: "'Space Grotesk', sans-serif" }}
                 >
                   {speaker.name}
                 </DialogTitle>
 
                 <p
-                  className="text-white/40 text-sm"
+                  className="text-sm text-white/40"
                   style={{ fontFamily: "'Space Grotesk', sans-serif" }}
                 >
                   "{speaker.talkTitle}"
@@ -244,16 +280,14 @@ function SpeakerDialog({
             </div>
           </DialogHeader>
 
-          {/* Divider */}
           <div
-            className="h-px w-full mb-8"
+            className="mb-8 h-px w-full"
             style={{ background: "rgba(255,255,255,0.06)" }}
           />
 
-          {/* Bio */}
           <div className="mb-8">
             <div
-              className="text-xs tracking-widest uppercase mb-4 flex items-center gap-2"
+              className="mb-4 flex items-center gap-2 text-xs uppercase tracking-widest"
               style={{
                 fontFamily: "'IBM Plex Mono', monospace",
                 color: "rgba(255,255,255,0.3)",
@@ -263,23 +297,22 @@ function SpeakerDialog({
               About the Speaker
             </div>
             <p
-              className="text-white/60 text-base leading-relaxed"
+              className="text-base leading-relaxed text-white/60"
               style={{ fontFamily: "'Space Grotesk', sans-serif" }}
             >
               {speaker.bio}
             </p>
           </div>
 
-          {/* Talk description */}
           <div
-            className="p-6 relative"
+            className="relative p-6"
             style={{
               background: "rgba(235, 0, 40, 0.04)",
               border: "1px solid rgba(235, 0, 40, 0.15)",
             }}
           >
             <div
-              className="text-xs tracking-widest uppercase mb-4 flex items-center gap-2"
+              className="mb-4 flex items-center gap-2 text-xs uppercase tracking-widest"
               style={{
                 fontFamily: "'IBM Plex Mono', monospace",
                 color: "#EB0028",
@@ -289,17 +322,16 @@ function SpeakerDialog({
               The Talk
             </div>
             <p
-              className="text-white/70 text-base leading-relaxed"
+              className="text-base leading-relaxed text-white/70"
               style={{ fontFamily: "'Space Grotesk', sans-serif" }}
             >
               {speaker.talkDescription}
             </p>
           </div>
 
-          {/* Segment badge */}
-          <div className="mt-6 flex items-center justify-between">
+          <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
             <div
-              className="text-white/20 text-xs tracking-widest uppercase"
+              className="text-xs uppercase tracking-widest text-white/20"
               style={{ fontFamily: "'IBM Plex Mono', monospace" }}
             >
               Segment:{" "}
@@ -307,16 +339,9 @@ function SpeakerDialog({
                 The {speaker.segment.charAt(0).toUpperCase() + speaker.segment.slice(1)}
               </span>
             </div>
-            {speaker.isPlaceholder && (
-              <div
-                className="text-xs tracking-widest uppercase"
-                style={{
-                  fontFamily: "'IBM Plex Mono', monospace",
-                  color: "rgba(255,255,255,0.2)",
-                }}
-              >
-                Speaker TBA
-              </div>
+
+            {!speaker.isPlaceholder && (
+              <SaveButton saved={saved} onClick={onToggleSave} />
             )}
           </div>
         </div>
@@ -325,7 +350,6 @@ function SpeakerDialog({
   );
 }
 
-// ── Segment Tab ───────────────────────────────────────────────
 function SegmentTab({
   segment,
   isActive,
@@ -337,15 +361,17 @@ function SegmentTab({
 }) {
   return (
     <motion.button
-      className="relative px-6 py-4 text-left group"
+      className="group relative px-6 py-4 text-left"
       onClick={onClick}
       whileTap={{ scale: 0.98 }}
     >
-      {/* Active indicator */}
       {isActive && (
         <motion.div
           className="absolute inset-0"
-          style={{ background: "rgba(235, 0, 40, 0.08)", border: "1px solid rgba(235, 0, 40, 0.3)" }}
+          style={{
+            background: "rgba(235, 0, 40, 0.08)",
+            border: "1px solid rgba(235, 0, 40, 0.3)",
+          }}
           layoutId="active-tab"
           transition={{ type: "spring", stiffness: 380, damping: 30 }}
         />
@@ -353,7 +379,7 @@ function SegmentTab({
 
       <div className="relative z-10">
         <div
-          className="text-xs tracking-widest uppercase mb-1"
+          className="mb-1 text-xs uppercase tracking-widest"
           style={{
             fontFamily: "'IBM Plex Mono', monospace",
             color: isActive ? "#EB0028" : "rgba(255,255,255,0.2)",
@@ -371,7 +397,7 @@ function SegmentTab({
           {segment.label}
         </div>
         <div
-          className="text-xs mt-1 hidden sm:block"
+          className="mt-1 hidden text-xs sm:block"
           style={{
             fontFamily: "'IBM Plex Mono', monospace",
             color: isActive ? "rgba(255,255,255,0.4)" : "rgba(255,255,255,0.15)",
@@ -384,26 +410,100 @@ function SegmentTab({
   );
 }
 
-// ── Main Speakers Page ────────────────────────────────────────
 export default function Speakers() {
   const [activeSegment, setActiveSegment] = useState<string>("past");
   const [selectedSpeaker, setSelectedSpeaker] = useState<Speaker | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [query, setQuery] = useState("");
+  const [topicFilter, setTopicFilter] = useState("all");
+  const [savedSpeakerIds, setSavedSpeakerIds] = useState<string[]>([]);
 
-  const currentSegment = segments.find((s) => s.id === activeSegment)!;
-  const currentSpeakers = speakers.filter((s) => s.segment === activeSegment);
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const segment = params.get("segment");
+    if (segment && segments.some((item) => item.id === segment)) {
+      setActiveSegment(segment);
+    }
+  }, []);
+
+  useEffect(() => {
+    const stored = window.localStorage.getItem(FAVORITES_STORAGE_KEY);
+    if (!stored) return;
+
+    try {
+      const parsed = JSON.parse(stored);
+      if (Array.isArray(parsed)) {
+        setSavedSpeakerIds(parsed.filter((value): value is string => typeof value === "string"));
+      }
+    } catch {
+      window.localStorage.removeItem(FAVORITES_STORAGE_KEY);
+    }
+  }, []);
+
+  useEffect(() => {
+    window.localStorage.setItem(
+      FAVORITES_STORAGE_KEY,
+      JSON.stringify(savedSpeakerIds),
+    );
+  }, [savedSpeakerIds]);
+
+  const currentSegment = useMemo(
+    () => segments.find((segment) => segment.id === activeSegment) ?? segments[0],
+    [activeSegment],
+  );
+
+  const availableTopics = useMemo(() => {
+    const topics = speakers
+      .filter((speaker) => speaker.segment === activeSegment && !speaker.isPlaceholder)
+      .map((speaker) => speaker.topic);
+
+    return Array.from(new Set(topics));
+  }, [activeSegment]);
+
+  const filteredSpeakers = useMemo(() => {
+    return speakers.filter((speaker) => {
+      if (speaker.segment !== activeSegment) return false;
+
+      const matchesQuery =
+        query.trim().length === 0 ||
+        speaker.name.toLowerCase().includes(query.toLowerCase()) ||
+        speaker.talkTitle.toLowerCase().includes(query.toLowerCase()) ||
+        speaker.topic.toLowerCase().includes(query.toLowerCase());
+
+      const matchesTopic =
+        topicFilter === "all" || speaker.topic === topicFilter;
+
+      return matchesQuery && matchesTopic;
+    });
+  }, [activeSegment, query, topicFilter]);
+
+  const savedSpeakers = useMemo(
+    () => speakers.filter((speaker) => savedSpeakerIds.includes(speaker.id)),
+    [savedSpeakerIds],
+  );
+
+  const visibleCount = filteredSpeakers.filter((speaker) => !speaker.isPlaceholder).length;
 
   const handleSpeakerClick = (speaker: Speaker) => {
     setSelectedSpeaker(speaker);
     setDialogOpen(true);
   };
 
+  const toggleSaveSpeaker = (speakerId: string) => {
+    setSavedSpeakerIds((current) =>
+      current.includes(speakerId)
+        ? current.filter((id) => id !== speakerId)
+        : [...current, speakerId],
+    );
+  };
+
+  const clearFilters = () => {
+    setQuery("");
+    setTopicFilter("all");
+  };
+
   return (
-    <div
-      className="min-h-screen relative"
-      style={{ background: "#000000" }}
-    >
-      {/* Background texture */}
+    <div className="min-h-screen relative" style={{ background: "#000000" }}>
       <div
         className="fixed inset-0 z-0 pointer-events-none"
         style={{ opacity: 0.6 }}
@@ -421,9 +521,7 @@ export default function Speakers() {
       </div>
 
       <div className="relative z-10">
-        {/* ── PAGE HEADER ──────────────────────────────── */}
         <div className="max-w-7xl mx-auto px-6 lg:px-8 pt-32 pb-16">
-          {/* Back link */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -431,10 +529,10 @@ export default function Speakers() {
             className="mb-12"
           >
             <Link href="/">
-              <div className="flex items-center gap-2 text-white/30 hover:text-white transition-colors duration-200 w-fit">
+              <div className="flex w-fit items-center gap-2 text-white/30 transition-colors duration-200 hover:text-white">
                 <ArrowLeft size={14} />
                 <span
-                  className="text-xs tracking-widest uppercase"
+                  className="text-xs uppercase tracking-widest"
                   style={{ fontFamily: "'IBM Plex Mono', monospace" }}
                 >
                   Back to Home
@@ -443,17 +541,17 @@ export default function Speakers() {
             </Link>
           </motion.div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-end">
+          <div className="grid grid-cols-1 items-end gap-12 lg:grid-cols-2">
             <div>
               <motion.div
-                className="flex items-center gap-3 mb-6"
+                className="mb-6 flex items-center gap-3"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.2 }}
               >
                 <div className="h-px w-12" style={{ background: "#EB0028" }} />
                 <span
-                  className="text-xs tracking-widest uppercase"
+                  className="text-xs uppercase tracking-widest"
                   style={{
                     fontFamily: "'IBM Plex Mono', monospace",
                     color: "#EB0028",
@@ -464,15 +562,15 @@ export default function Speakers() {
               </motion.div>
 
               <motion.h1
-                className="text-5xl lg:text-7xl font-bold text-white leading-tight"
+                className="text-5xl font-bold leading-tight text-white lg:text-7xl"
                 style={{ fontFamily: "'Space Grotesk', sans-serif" }}
                 initial={{ opacity: 0, y: 40 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.3 }}
               >
-                The Voices
+                Build your
                 <br />
-                <span style={{ color: "#EB0028" }}>of Time.</span>
+                <span style={{ color: "#EB0028" }}>own route through time.</span>
               </motion.h1>
             </div>
 
@@ -482,11 +580,11 @@ export default function Speakers() {
               transition={{ delay: 0.5 }}
             >
               <p
-                className="text-white/40 text-lg leading-relaxed mb-6"
+                className="mb-6 text-lg leading-relaxed text-white/40"
                 style={{ fontFamily: "'Space Grotesk', sans-serif" }}
               >
-                Six student speakers. Three segments. One urgent question: what
-                will you do with the time that's left?
+                Filter by segment, search for ideas that pull at you, and save a
+                shortlist of talks you want to come back to.
               </p>
               <div className="flex items-center gap-6">
                 <div className="text-center">
@@ -497,19 +595,16 @@ export default function Speakers() {
                       color: "#EB0028",
                     }}
                   >
-                    6
+                    {speakers.filter((speaker) => !speaker.isPlaceholder).length}
                   </div>
                   <div
-                    className="text-white/30 text-xs tracking-widest uppercase"
+                    className="text-xs uppercase tracking-widest text-white/30"
                     style={{ fontFamily: "'IBM Plex Mono', monospace" }}
                   >
                     Speakers
                   </div>
                 </div>
-                <div
-                  className="h-8 w-px"
-                  style={{ background: "rgba(255,255,255,0.1)" }}
-                />
+                <div className="h-8 w-px" style={{ background: "rgba(255,255,255,0.1)" }} />
                 <div className="text-center">
                   <div
                     className="text-3xl font-bold"
@@ -518,34 +613,31 @@ export default function Speakers() {
                       color: "#EB0028",
                     }}
                   >
-                    3
+                    {savedSpeakers.length}
                   </div>
                   <div
-                    className="text-white/30 text-xs tracking-widest uppercase"
+                    className="text-xs uppercase tracking-widest text-white/30"
+                    style={{ fontFamily: "'IBM Plex Mono', monospace" }}
+                  >
+                    Saved
+                  </div>
+                </div>
+                <div className="h-8 w-px" style={{ background: "rgba(255,255,255,0.1)" }} />
+                <div className="text-center">
+                  <div
+                    className="text-3xl font-bold"
+                    style={{
+                      fontFamily: "'IBM Plex Mono', monospace",
+                      color: "#EB0028",
+                    }}
+                  >
+                    {segments.length}
+                  </div>
+                  <div
+                    className="text-xs uppercase tracking-widest text-white/30"
                     style={{ fontFamily: "'IBM Plex Mono', monospace" }}
                   >
                     Segments
-                  </div>
-                </div>
-                <div
-                  className="h-8 w-px"
-                  style={{ background: "rgba(255,255,255,0.1)" }}
-                />
-                <div className="text-center">
-                  <div
-                    className="text-3xl font-bold"
-                    style={{
-                      fontFamily: "'IBM Plex Mono', monospace",
-                      color: "#EB0028",
-                    }}
-                  >
-                    1
-                  </div>
-                  <div
-                    className="text-white/30 text-xs tracking-widest uppercase"
-                    style={{ fontFamily: "'IBM Plex Mono', monospace" }}
-                  >
-                    Theme
                   </div>
                 </div>
               </div>
@@ -553,7 +645,6 @@ export default function Speakers() {
           </div>
         </div>
 
-        {/* ── SEGMENT TABS ─────────────────────────────── */}
         <div
           className="sticky top-16 lg:top-20 z-30"
           style={{
@@ -563,7 +654,7 @@ export default function Speakers() {
           }}
         >
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
-            <div className="flex items-stretch gap-0">
+            <div className="flex flex-wrap items-stretch gap-0 overflow-x-auto">
               {segments.map((segment) => (
                 <SegmentTab
                   key={segment.id}
@@ -576,19 +667,188 @@ export default function Speakers() {
           </div>
         </div>
 
-        {/* ── SEGMENT CONTENT ──────────────────────────── */}
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-16">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-12">
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+            <motion.div
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.15 }}
+              className="p-6"
+              style={{
+                border: "1px solid rgba(255,255,255,0.08)",
+                background: "rgba(255,255,255,0.025)",
+              }}
+            >
+              <div className="mb-3 flex items-center gap-2">
+                <Clock size={14} style={{ color: "#EB0028" }} />
+                <div
+                  className="text-xs uppercase tracking-widest text-white/35"
+                  style={{ fontFamily: "'IBM Plex Mono', monospace" }}
+                >
+                  Currently exploring
+                </div>
+              </div>
+              <h2
+                className="mb-2 text-3xl font-bold text-white"
+                style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+              >
+                {currentSegment.label}
+              </h2>
+              <p
+                className="mb-5 max-w-2xl text-sm leading-relaxed text-white/45"
+                style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+              >
+                {currentSegment.description}
+              </p>
+
+              <div className="grid gap-4 md:grid-cols-[1.2fr_0.8fr]">
+                <label className="block">
+                  <div
+                    className="mb-2 text-xs uppercase tracking-widest text-white/30"
+                    style={{ fontFamily: "'IBM Plex Mono', monospace" }}
+                  >
+                    Search talks
+                  </div>
+                  <div
+                    className="flex items-center gap-3 px-4 py-3"
+                    style={{
+                      border: "1px solid rgba(255,255,255,0.08)",
+                      background: "rgba(0,0,0,0.35)",
+                    }}
+                  >
+                    <Search size={14} style={{ color: "#EB0028" }} />
+                    <input
+                      value={query}
+                      onChange={(event) => setQuery(event.target.value)}
+                      placeholder="Search speaker, title, or topic"
+                      className="w-full bg-transparent text-sm text-white placeholder:text-white/25 focus:outline-none"
+                      style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+                    />
+                  </div>
+                </label>
+
+                <label className="block">
+                  <div
+                    className="mb-2 text-xs uppercase tracking-widest text-white/30"
+                    style={{ fontFamily: "'IBM Plex Mono', monospace" }}
+                  >
+                    Topic
+                  </div>
+                  <select
+                    value={topicFilter}
+                    onChange={(event) => setTopicFilter(event.target.value)}
+                    className="w-full px-4 py-3 text-sm text-white focus:outline-none"
+                    style={{
+                      fontFamily: "'Space Grotesk', sans-serif",
+                      border: "1px solid rgba(255,255,255,0.08)",
+                      background: "rgba(0,0,0,0.35)",
+                    }}
+                  >
+                    <option value="all">All topics</option>
+                    {availableTopics.map((topic) => (
+                      <option key={topic} value={topic}>
+                        {topic}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              </div>
+
+              <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
+                <div
+                  className="text-xs uppercase tracking-widest text-white/30"
+                  style={{ fontFamily: "'IBM Plex Mono', monospace" }}
+                >
+                  {visibleCount} active talk{visibleCount === 1 ? "" : "s"} visible
+                </div>
+                {(query || topicFilter !== "all") && (
+                  <button
+                    type="button"
+                    className="text-xs uppercase tracking-widest text-white/50 transition-colors hover:text-white"
+                    style={{ fontFamily: "'IBM Plex Mono', monospace" }}
+                    onClick={clearFilters}
+                  >
+                    Clear filters
+                  </button>
+                )}
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.22 }}
+              className="p-6"
+              style={{
+                border: "1px solid rgba(235,0,40,0.15)",
+                background: "rgba(235,0,40,0.05)",
+              }}
+            >
+              <div
+                className="mb-3 text-xs uppercase tracking-widest"
+                style={{
+                  fontFamily: "'IBM Plex Mono', monospace",
+                  color: "#EB0028",
+                }}
+              >
+                Your shortlist
+              </div>
+
+              {savedSpeakers.length === 0 ? (
+                <p
+                  className="text-sm leading-relaxed text-white/55"
+                  style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+                >
+                  Save talks as you browse and this space turns into a quick personal
+                  lineup planner.
+                </p>
+              ) : (
+                <div className="space-y-3">
+                  {savedSpeakers.map((speaker) => (
+                    <button
+                      key={speaker.id}
+                      type="button"
+                      className="flex w-full items-center justify-between gap-3 p-3 text-left transition-colors"
+                      style={{
+                        border: "1px solid rgba(255,255,255,0.08)",
+                        background: "rgba(0,0,0,0.2)",
+                      }}
+                      onClick={() => handleSpeakerClick(speaker)}
+                    >
+                      <div>
+                        <div
+                          className="text-sm font-bold text-white"
+                          style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+                        >
+                          {speaker.name}
+                        </div>
+                        <div
+                          className="text-[11px] text-white/35"
+                          style={{ fontFamily: "'IBM Plex Mono', monospace" }}
+                        >
+                          {speaker.topic}
+                        </div>
+                      </div>
+                      <BookmarkCheck size={15} style={{ color: "#EB0028" }} />
+                    </button>
+                  ))}
+                </div>
+              )}
+            </motion.div>
+          </div>
+        </div>
+
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 pb-16">
           <AnimatePresence mode="wait">
             <motion.div
-              key={activeSegment}
+              key={`${activeSegment}-${query}-${topicFilter}`}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.4 }}
+              transition={{ duration: 0.35 }}
             >
-              {/* Segment header */}
               <div className="mb-12">
-                <div className="flex items-center gap-4 mb-4">
+                <div className="mb-4 flex items-center gap-4">
                   <span
                     className="text-5xl font-bold"
                     style={{
@@ -606,7 +866,7 @@ export default function Speakers() {
                       {currentSegment.label}
                     </h2>
                     <div
-                      className="text-xs tracking-widest uppercase mt-1"
+                      className="mt-1 text-xs uppercase tracking-widest"
                       style={{
                         fontFamily: "'IBM Plex Mono', monospace",
                         color: "#EB0028",
@@ -616,60 +876,87 @@ export default function Speakers() {
                     </div>
                   </div>
                 </div>
-                <p
-                  className="text-white/40 text-base max-w-2xl"
-                  style={{ fontFamily: "'Space Grotesk', sans-serif" }}
-                >
-                  {currentSegment.description}
-                </p>
               </div>
 
-              {/* Speaker grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
-                {currentSpeakers.map((speaker, i) => (
-                  <SpeakerCard
-                    key={speaker.id}
-                    speaker={speaker}
-                    index={i}
-                    onClick={() => handleSpeakerClick(speaker)}
-                  />
-                ))}
-              </div>
+              {filteredSpeakers.length === 0 ? (
+                <div
+                  className="p-8 text-center"
+                  style={{
+                    border: "1px solid rgba(255,255,255,0.08)",
+                    background: "rgba(255,255,255,0.02)",
+                  }}
+                >
+                  <div
+                    className="mb-3 text-xs uppercase tracking-widest text-white/30"
+                    style={{ fontFamily: "'IBM Plex Mono', monospace" }}
+                  >
+                    No talks match that filter
+                  </div>
+                  <button
+                    type="button"
+                    onClick={clearFilters}
+                    className="btn-outline-ted"
+                  >
+                    Reset filters
+                  </button>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+                  {filteredSpeakers.map((speaker, index) => (
+                    <SpeakerCard
+                      key={speaker.id}
+                      speaker={speaker}
+                      index={index}
+                      saved={savedSpeakerIds.includes(speaker.id)}
+                      onClick={() => handleSpeakerClick(speaker)}
+                      onToggleSave={() => toggleSaveSpeaker(speaker.id)}
+                    />
+                  ))}
+                </div>
+              )}
             </motion.div>
           </AnimatePresence>
         </div>
 
-        {/* ── ALL SPEAKERS OVERVIEW ─────────────────────── */}
         <div
           className="border-t"
           style={{ borderColor: "rgba(255,255,255,0.06)" }}
         >
           <div className="max-w-7xl mx-auto px-6 lg:px-8 py-16">
-            <div className="mb-10">
-              <div
-                className="text-xs tracking-widest uppercase mb-4"
-                style={{
-                  fontFamily: "'IBM Plex Mono', monospace",
-                  color: "#EB0028",
-                }}
-              >
-                All Speakers
+            <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
+              <div>
+                <div
+                  className="mb-4 text-xs uppercase tracking-widest"
+                  style={{
+                    fontFamily: "'IBM Plex Mono', monospace",
+                    color: "#EB0028",
+                  }}
+                >
+                  All Speakers
+                </div>
+                <h3
+                  className="text-2xl font-bold text-white"
+                  style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+                >
+                  The Complete Lineup
+                </h3>
               </div>
-              <h3
-                className="text-2xl font-bold text-white"
-                style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+
+              <div
+                className="text-xs uppercase tracking-widest text-white/30"
+                style={{ fontFamily: "'IBM Plex Mono', monospace" }}
               >
-                The Complete Lineup
-              </h3>
+                Click any row to open the full talk brief
+              </div>
             </div>
 
             <div className="space-y-2">
               {speakers
-                .filter((s) => !s.isPlaceholder)
-                .map((speaker, i) => (
+                .filter((speaker) => !speaker.isPlaceholder)
+                .map((speaker, index) => (
                   <motion.div
                     key={speaker.id}
-                    className="flex items-center gap-6 py-4 px-6 group cursor-pointer"
+                    className="group flex cursor-pointer items-center gap-6 px-6 py-4"
                     style={{
                       border: "1px solid rgba(255,255,255,0.04)",
                       transition: "all 0.2s ease",
@@ -682,31 +969,31 @@ export default function Speakers() {
                     initial={{ opacity: 0, x: -20 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
-                    transition={{ delay: i * 0.05 }}
+                    transition={{ delay: index * 0.04 }}
                   >
                     <span
-                      className="text-white/20 text-xs w-6"
+                      className="w-6 text-xs text-white/20"
                       style={{ fontFamily: "'IBM Plex Mono', monospace" }}
                     >
-                      {String(i + 1).padStart(2, "0")}
+                      {String(index + 1).padStart(2, "0")}
                     </span>
                     <SpeakerAvatar speaker={speaker} size="sm" />
                     <div className="flex-1">
                       <div
-                        className="text-white font-bold text-sm"
+                        className="text-sm font-bold text-white"
                         style={{ fontFamily: "'Space Grotesk', sans-serif" }}
                       >
                         {speaker.name}
                       </div>
                       <div
-                        className="text-white/30 text-xs"
+                        className="text-xs text-white/30"
                         style={{ fontFamily: "'IBM Plex Mono', monospace" }}
                       >
                         {speaker.talkTitle}
                       </div>
                     </div>
                     <div
-                      className="text-xs tracking-widest uppercase hidden sm:block"
+                      className="hidden text-xs uppercase tracking-widest sm:block"
                       style={{
                         fontFamily: "'IBM Plex Mono', monospace",
                         color: "#EB0028",
@@ -715,7 +1002,7 @@ export default function Speakers() {
                       {speaker.topic}
                     </div>
                     <div
-                      className="text-xs tracking-widest uppercase hidden md:block"
+                      className="hidden text-xs uppercase tracking-widest md:block"
                       style={{
                         fontFamily: "'IBM Plex Mono', monospace",
                         color: "rgba(255,255,255,0.2)",
@@ -723,9 +1010,13 @@ export default function Speakers() {
                     >
                       The {speaker.segment.charAt(0).toUpperCase() + speaker.segment.slice(1)}
                     </div>
+                    <SaveButton
+                      saved={savedSpeakerIds.includes(speaker.id)}
+                      onClick={() => toggleSaveSpeaker(speaker.id)}
+                    />
                     <ChevronRight
                       size={14}
-                      className="text-white/20 group-hover:text-white/50 transition-colors"
+                      className="text-white/20 transition-colors group-hover:text-white/50"
                     />
                   </motion.div>
                 ))}
@@ -734,11 +1025,16 @@ export default function Speakers() {
         </div>
       </div>
 
-      {/* Speaker Dialog */}
       <SpeakerDialog
         speaker={selectedSpeaker}
         open={dialogOpen}
+        saved={selectedSpeaker ? savedSpeakerIds.includes(selectedSpeaker.id) : false}
         onClose={() => setDialogOpen(false)}
+        onToggleSave={() => {
+          if (selectedSpeaker) {
+            toggleSaveSpeaker(selectedSpeaker.id);
+          }
+        }}
       />
     </div>
   );

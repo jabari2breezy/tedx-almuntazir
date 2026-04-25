@@ -203,10 +203,33 @@ function vitePluginStorageProxy(): Plugin {
   };
 }
 
-const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginManusDebugCollector(), vitePluginStorageProxy()];
+function vitePluginSpaFallback(): Plugin {
+  return {
+    name: "spa-404-fallback",
+    closeBundle() {
+      const docsDir = path.join(PROJECT_ROOT, "docs");
+      const indexPath = path.join(docsDir, "index.html");
+      const notFoundPath = path.join(docsDir, "404.html");
+
+      if (fs.existsSync(indexPath)) {
+        fs.copyFileSync(indexPath, notFoundPath);
+      }
+    },
+  };
+}
+
+const plugins = [
+  react(),
+  tailwindcss(),
+  jsxLocPlugin(),
+  vitePluginManusRuntime(),
+  vitePluginManusDebugCollector(),
+  vitePluginStorageProxy(),
+  vitePluginSpaFallback(),
+];
 
 export default defineConfig({
-  base: process.env.NODE_ENV === 'production' ? '/tedx-almuntazir/' : '/',
+  base: process.env.NODE_ENV === "production" ? "./" : "/",
   plugins,
   resolve: {
     alias: {
@@ -218,11 +241,7 @@ export default defineConfig({
   envDir: path.resolve(import.meta.dirname),
   root: path.resolve(import.meta.dirname, "client"),
   build: {
-<<<<<<< HEAD
     outDir: path.resolve(import.meta.dirname, "docs"),
-=======
-    outDir: path.resolve(import.meta.dirname, "dist/public"),
->>>>>>> origin/main
     emptyOutDir: true,
   },
   server: {
