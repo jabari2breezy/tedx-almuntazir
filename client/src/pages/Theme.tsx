@@ -4,7 +4,7 @@
  * Parallax: Multiple depth layers that move at different speeds
  */
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "wouter";
 import {
   motion,
@@ -12,10 +12,104 @@ import {
   useTransform,
   useInView,
 } from "framer-motion";
+import Hls from "hls.js";
 import { ArrowRight, ArrowLeft } from "lucide-react";
 import { themeManifesto } from "@/lib/data";
 import { BackgroundPaths } from "@/components/ui/background-paths";
 import { LayeredText } from "@/components/ui/layered-text";
+
+const THEME_BACKGROUND_STREAM =
+  "https://stream.mux.com/jPyJ2YM6Nlly7U6EyfxM01tz4D4uPE3gyJ4PYuvY62Wg.m3u8";
+
+function ThemeBackgroundVideo() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    if (prefersReducedMotion) {
+      return;
+    }
+
+    let hls: Hls | null = null;
+
+    const handleCanPlay = () => {
+      setIsReady(true);
+      void video.play().catch(() => setIsReady(false));
+    };
+
+    const handleError = () => {
+      setIsReady(false);
+    };
+
+    video.addEventListener("canplay", handleCanPlay);
+    video.addEventListener("error", handleError);
+
+    if (video.canPlayType("application/vnd.apple.mpegurl")) {
+      video.src = THEME_BACKGROUND_STREAM;
+      video.load();
+    } else if (Hls.isSupported()) {
+      hls = new Hls({
+        autoStartLoad: true,
+        enableWorker: true,
+      });
+      hls.loadSource(THEME_BACKGROUND_STREAM);
+      hls.attachMedia(video);
+      hls.on(Hls.Events.MANIFEST_PARSED, () => {
+        void video.play().catch(() => setIsReady(false));
+      });
+      hls.on(Hls.Events.ERROR, () => {
+        setIsReady(false);
+      });
+    }
+
+    return () => {
+      video.pause();
+      video.removeEventListener("canplay", handleCanPlay);
+      video.removeEventListener("error", handleError);
+      if (hls) hls.destroy();
+      video.removeAttribute("src");
+      video.load();
+    };
+  }, []);
+
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      <video
+        ref={videoRef}
+        className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
+          isReady ? "opacity-100" : "opacity-0"
+        }`}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+      />
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            "linear-gradient(180deg, rgba(0,0,0,0.78) 0%, rgba(0,0,0,0.68) 36%, rgba(0,0,0,0.84) 100%)",
+        }}
+      />
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(circle at center, rgba(255,255,255,0.06), transparent 45%)",
+          opacity: isReady ? 1 : 0,
+        }}
+      />
+    </div>
+  );
+}
 
 // ── Parallax Layer ────────────────────────────────────────────
 function ParallaxLayer({
@@ -151,7 +245,15 @@ export default function Theme() {
     >
       {/* ── CINEMATIC BACKGROUND ─────────────────────────── */}
       <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
+        <ThemeBackgroundVideo />
         <BackgroundPaths title="" subtitle="" />
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.2) 45%, rgba(0,0,0,0.45) 100%)",
+          }}
+        />
       </div>
 
       {/* ── CONTENT ─────────────────────────────────────── */}

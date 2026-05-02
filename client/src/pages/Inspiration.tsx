@@ -8,20 +8,12 @@ import { Link } from "wouter";
 import { BackgroundPaths } from "@/components/ui/background-paths";
 
 export default function Inspiration() {
-  const handleCTA = () => {
-    // Navigate to speakers page
-    window.location.href = "/speakers";
-  };
-
   return (
     <div style={{ background: "#000000" }}>
       {/* Main BackgroundPaths Section */}
       <BackgroundPaths
         title="Ideas Worth Spreading"
         subtitle="Discover the stories of six young thinkers exploring humanity's most urgent relationship: our relationship with time."
-        buttonText="Meet the Speakers"
-        onButtonClick={handleCTA}
-        subtitleStyle={{ fontFamily: "'Satoshi', sans-serif" }}
       />
 
       {/* Secondary Section: Why This Matters */}

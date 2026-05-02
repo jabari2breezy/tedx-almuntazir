@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
+import Hls from "hls.js";
 import {
   ArrowLeft,
   Bookmark,
@@ -21,6 +22,122 @@ import {
 import { speakers, segments, type Speaker } from "@/lib/data";
 
 const FAVORITES_STORAGE_KEY = "tedx-almuntazir-saved-speakers";
+const SPEAKERS_BACKGROUND_STREAM =
+  "https://stream.mux.com/Si6ej2ZRrxRCnTYBXSScDRCdd7CGnyTqiPszZcw3z4I.m3u8";
+const SPEAKERS_BACKGROUND_FALLBACK =
+  "https://d2xsxph8kpxj0f.cloudfront.net/310519663582999684/647iubpgwR3y9bf7h3fhHY/tedx-speakers-bg-GmeYhJM4W6nvFCfe3mbDd7.webp";
+
+function SpeakersBackground() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isVideoReady, setIsVideoReady] = useState(false);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    if (prefersReducedMotion) {
+      return;
+    }
+
+    let hls: Hls | null = null;
+
+    const handleCanPlay = () => {
+      setIsVideoReady(true);
+      void video.play().catch(() => {
+        setIsVideoReady(false);
+      });
+    };
+
+    const handleError = () => {
+      setIsVideoReady(false);
+    };
+
+    video.addEventListener("canplay", handleCanPlay);
+    video.addEventListener("error", handleError);
+
+    if (video.canPlayType("application/vnd.apple.mpegurl")) {
+      video.src = SPEAKERS_BACKGROUND_STREAM;
+      video.load();
+    } else if (Hls.isSupported()) {
+      hls = new Hls({
+        autoStartLoad: true,
+        enableWorker: true,
+      });
+      hls.loadSource(SPEAKERS_BACKGROUND_STREAM);
+      hls.attachMedia(video);
+      hls.on(Hls.Events.MANIFEST_PARSED, () => {
+        void video.play().catch(() => {
+          setIsVideoReady(false);
+        });
+      });
+      hls.on(Hls.Events.ERROR, () => {
+        setIsVideoReady(false);
+      });
+    }
+
+    return () => {
+      video.pause();
+      video.removeEventListener("canplay", handleCanPlay);
+      video.removeEventListener("error", handleError);
+      if (hls) {
+        hls.destroy();
+      }
+      video.removeAttribute("src");
+      video.load();
+    };
+  }, []);
+
+  return (
+    <div
+      className="fixed inset-0 z-0 overflow-hidden pointer-events-none"
+      aria-hidden="true"
+    >
+      <img
+        src={SPEAKERS_BACKGROUND_FALLBACK}
+        alt=""
+        className="h-full w-full object-cover scale-105"
+        style={{ opacity: isVideoReady ? 0.16 : 0.32 }}
+      />
+      <video
+        ref={videoRef}
+        className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
+          isVideoReady ? "opacity-100" : "opacity-0"
+        }`}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+      />
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            "linear-gradient(180deg, rgba(20,0,4,0.2) 0%, rgba(26,0,6,0.54) 42%, rgba(0,0,0,0.88) 100%)",
+        }}
+      />
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            "linear-gradient(135deg, rgba(235, 0, 40, 0.28) 0%, rgba(235, 0, 40, 0.14) 28%, rgba(255,255,255,0.03) 62%, rgba(0,0,0,0) 100%)",
+          mixBlendMode: "screen",
+        }}
+      />
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(circle at top right, rgba(235, 0, 40, 0.22), transparent 38%)",
+        }}
+      />
+    </div>
+  );
+}
 
 function SpeakerAvatar({
   speaker,
@@ -506,21 +623,7 @@ export default function Speakers() {
 
   return (
     <div className="min-h-screen relative" style={{ background: "#000000" }}>
-      <div
-        className="fixed inset-0 z-0 pointer-events-none"
-        style={{ opacity: 0.6 }}
-      >
-        <img
-          src="https://d2xsxph8kpxj0f.cloudfront.net/310519663582999684/647iubpgwR3y9bf7h3fhHY/tedx-speakers-bg-GmeYhJM4W6nvFCfe3mbDd7.webp"
-          alt=""
-          className="w-full h-full object-cover"
-          style={{ opacity: 0.3 }}
-        />
-        <div
-          className="absolute inset-0"
-          style={{ background: "rgba(0,0,0,0.7)" }}
-        />
-      </div>
+      <SpeakersBackground />
 
       <div className="relative z-10">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 pt-32 pb-16">

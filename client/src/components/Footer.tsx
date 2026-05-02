@@ -1,9 +1,7 @@
 /**
- * Footer — TEDx compliance footer
- * Design: Neo-Brutalist Editorial | Red logo, social links, license text
+ * Footer — VOID Aesthetic: minimal, clean, subtle
  */
 
-import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { Twitter, Instagram, Youtube, Mail } from "lucide-react";
 
@@ -11,7 +9,7 @@ const footerLinks = [
   { label: "Home", href: "/" },
   { label: "Theme", href: "/theme" },
   { label: "Speakers", href: "/speakers" },
-  { label: "About TED", href: "/about" },
+  { label: "About", href: "/about" },
 ];
 
 const socialLinks = [
@@ -23,86 +21,51 @@ const socialLinks = [
 
 export default function Footer() {
   return (
-    <footer
-      className="relative border-t"
-      style={{
-        background: "#000000",
-        borderColor: "rgba(235, 0, 40, 0.2)",
-      }}
-    >
-      {/* Top red rule */}
-      <div className="h-px w-full" style={{ background: "#EB0028" }} />
-
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-20">
+    <footer className="relative mt-auto" style={{ borderTop: "1px solid rgba(255,255,255,0.04)" }}>
+      <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
+        <div className="grid grid-cols-1 gap-12 md:grid-cols-3 lg:gap-20">
           {/* Brand */}
           <div className="space-y-6">
             <div>
-              <div className="flex items-baseline gap-1 mb-2">
-                <span
-                  className="text-white text-3xl font-bold"
-                  style={{ fontFamily: "'Space Grotesk', sans-serif" }}
-                >
-                  TED
-                </span>
-                <span
-                  className="text-3xl font-bold"
-                  style={{
-                    fontFamily: "'Space Grotesk', sans-serif",
-                    color: "#EB0028",
-                  }}
-                >
-                  x
+              <div className="mb-2 flex items-baseline gap-0.5">
+                <span className="text-xl font-semibold text-white">
+                  TED<span className="text-[#EB0028]">x</span>
                 </span>
               </div>
-              <div
-                className="text-white/60 text-xs tracking-widest uppercase"
-                style={{ fontFamily: "'IBM Plex Mono', monospace" }}
-              >
+              <div className="text-xs font-mono uppercase tracking-widest text-white/35">
                 AlMuntazirSchoolsYouth
               </div>
-              <div
-                className="text-white/30 text-xs tracking-widest mt-1"
-                style={{ fontFamily: "'IBM Plex Mono', monospace" }}
-              >
+              <div className="mt-1 text-xs font-mono tracking-widest text-white/20">
                 2026 — Borrowed Time
               </div>
             </div>
 
-            {/* Social Links */}
+            {/* Social */}
             <div className="flex items-center gap-4">
               {socialLinks.map(({ icon: Icon, label, href }) => (
-                <motion.a
+                <a
                   key={label}
                   href={href}
                   aria-label={label}
-                  className="text-white/40 hover:text-white transition-colors duration-200"
-                  whileHover={{ scale: 1.1, y: -2 }}
-                  whileTap={{ scale: 0.95 }}
+                  className="text-white/25 transition-colors duration-200 hover:text-white/60"
                 >
-                  <Icon size={18} />
-                </motion.a>
+                  <Icon size={16} />
+                </a>
               ))}
             </div>
           </div>
 
           {/* Navigation */}
           <div>
-            <div
-              className="text-white/30 text-xs tracking-widest uppercase mb-6"
-              style={{ fontFamily: "'IBM Plex Mono', monospace" }}
-            >
+            <div className="mb-6 text-xs font-mono uppercase tracking-widest text-white/20">
               Navigation
             </div>
             <nav className="space-y-3">
               {footerLinks.map((link) => (
                 <Link key={link.href} href={link.href}>
-                  <div
-                    className="text-white/60 hover:text-white text-sm transition-colors duration-200 block"
-                    style={{ fontFamily: "'Space Grotesk', sans-serif" }}
-                  >
+                  <span className="block text-sm text-white/40 transition-colors duration-200 hover:text-white">
                     {link.label}
-                  </div>
+                  </span>
                 </Link>
               ))}
             </nav>
@@ -110,52 +73,30 @@ export default function Footer() {
 
           {/* Event Info */}
           <div>
-            <div
-              className="text-white/30 text-xs tracking-widest uppercase mb-6"
-              style={{ fontFamily: "'IBM Plex Mono', monospace" }}
-            >
+            <div className="mb-6 text-xs font-mono uppercase tracking-widest text-white/20">
               Event Info
             </div>
             <div className="space-y-3">
               <div>
-                <div
-                  className="text-white/30 text-xs tracking-widest uppercase mb-1"
-                  style={{ fontFamily: "'IBM Plex Mono', monospace" }}
-                >
+                <div className="mb-1 text-xs font-mono uppercase tracking-widest text-white/20">
                   Date
                 </div>
-                <div
-                  className="text-white/70 text-sm"
-                  style={{ fontFamily: "'Space Grotesk', sans-serif" }}
-                >
-                  2026 — TBA
-                </div>
+                <div className="text-sm text-white/50">2026 — TBA</div>
               </div>
               <div>
-                <div
-                  className="text-white/30 text-xs tracking-widest uppercase mb-1"
-                  style={{ fontFamily: "'IBM Plex Mono', monospace" }}
-                >
+                <div className="mb-1 text-xs font-mono uppercase tracking-widest text-white/20">
                   Location
                 </div>
-                <div
-                  className="text-white/70 text-sm"
-                  style={{ fontFamily: "'Space Grotesk', sans-serif" }}
-                >
-                  Al Muntazir Schools, Dar es Salaam
-                </div>
+                <div className="text-sm text-white/50">Al Muntazir Schools, Dar es Salaam</div>
               </div>
               <div>
-                <div
-                  className="text-white/30 text-xs tracking-widest uppercase mb-1"
-                  style={{ fontFamily: "'IBM Plex Mono', monospace" }}
-                >
+                <div className="mb-1 text-xs font-mono uppercase tracking-widest text-white/20">
                   Contact
                 </div>
                 <a
                   href="mailto:tedxalmuntazirschoolsyouth@gmail.com"
-                  className="text-sm transition-colors duration-200"
-                  style={{ color: "#EB0028", fontFamily: "'Space Grotesk', sans-serif" }}
+                  className="text-sm transition-colors hover:text-[#EB0028]"
+                  style={{ color: "#EB0028" }}
                 >
                   tedxalmuntazirschoolsyouth@gmail.com
                 </a>
@@ -164,23 +105,17 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Bottom bar */}
+        {/* Bottom */}
         <div
-          className="mt-16 pt-8 border-t flex flex-col md:flex-row items-start md:items-center justify-between gap-4"
-          style={{ borderColor: "rgba(255,255,255,0.06)" }}
+          className="mt-16 flex flex-col items-start justify-between gap-4 border-t pt-8 md:flex-row md:items-center"
+          style={{ borderColor: "rgba(255,255,255,0.04)" }}
         >
-          <div
-            className="text-white/25 text-xs leading-relaxed max-w-xl"
-            style={{ fontFamily: "'IBM Plex Mono', monospace" }}
-          >
-            This independent TEDx event is operated under license from TED. In the spirit of ideas worth spreading, TEDx is a program of local, self-organized events that bring people together to share a TED-like experience.
-          </div>
-          <div
-            className="text-white/20 text-xs whitespace-nowrap"
-            style={{ fontFamily: "'IBM Plex Mono', monospace" }}
-          >
+          <p className="max-w-xl text-xs leading-relaxed text-white/15 font-mono">
+            This independent TEDx event is operated under license from TED.
+          </p>
+          <span className="whitespace-nowrap text-xs text-white/15 font-mono">
             © 2026 TEDxAlMuntazirSchoolsYouth
-          </div>
+          </span>
         </div>
       </div>
     </footer>

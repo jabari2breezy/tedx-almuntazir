@@ -19,15 +19,12 @@ importers:
       '@hookform/resolvers':
         specifier: ^5.2.2
         version: 5.2.2(react-hook-form@7.64.0(react@19.2.1))
-<<<<<<< HEAD
       '@hugeicons/core-free-icons':
         specifier: ^4.1.1
         version: 4.1.1
       '@hugeicons/react':
         specifier: ^1.1.6
         version: 1.1.6(react@19.2.1)
-=======
->>>>>>> origin/main
       '@radix-ui/react-accordion':
         specifier: ^1.2.12
         version: 1.2.12(@types/react-dom@19.2.1(@types/react@19.2.1))(@types/react@19.2.1)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
@@ -127,12 +124,12 @@ importers:
       framer-motion:
         specifier: ^12.23.22
         version: 12.23.22(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
-<<<<<<< HEAD
       gsap:
         specifier: ^3.15.0
         version: 3.15.0
-=======
->>>>>>> origin/main
+      hls.js:
+        specifier: ^1.6.16
+        version: 1.6.16
       input-otp:
         specifier: ^1.4.2
         version: 1.4.2(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
@@ -699,7 +696,6 @@ packages:
     peerDependencies:
       react-hook-form: ^7.55.0
 
-<<<<<<< HEAD
   '@hugeicons/core-free-icons@4.1.1':
     resolution: {integrity: sha512-teqIBvPHl90ygIwKyJwTxOH8aNp1X1PjDTcMvLkEwdPxPD+8mssrZ5kXKIAJJFYPsz69a8LYQY0UPid4PAdavg==}
 
@@ -708,8 +704,6 @@ packages:
     peerDependencies:
       react: '>=16.0.0'
 
-=======
->>>>>>> origin/main
   '@iconify/types@2.0.0':
     resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
 
@@ -2425,12 +2419,9 @@ packages:
   graceful-fs@4.2.11:
     resolution: {integrity: sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==}
 
-<<<<<<< HEAD
   gsap@3.15.0:
     resolution: {integrity: sha512-dMW4CWBTUK1AEEDeZc1g4xpPGIrSf9fJF960qbTZmN/QwZIWY5wgliS6JWl9/25fpTGJrMRtSjGtOmPnfjZB+A==}
 
-=======
->>>>>>> origin/main
   hachure-fill@0.5.2:
     resolution: {integrity: sha512-3GKBOn+m2LX9iq+JC1064cSFprJY4jL1jCXTcpnfER5HYE2l/4EfWSGzkPa/ZDBmYI0ZOEj5VHV/eKnPGkHuOg==}
 
@@ -2484,6 +2475,9 @@ packages:
 
   hastscript@9.0.1:
     resolution: {integrity: sha512-g7df9rMFX/SPi34tyGCyUBREQoKkapwdY/T04Qn9TDWfHhAYt4/I0gMVirzK5wEzeUqIjEB+LXC/ypb7Aqno5w==}
+
+  hls.js@1.6.16:
+    resolution: {integrity: sha512-VSIRpLfRwlAAdGL4wiTucx2ScRipo0ed1FBatWkyt832jC4CReKstga6yIhYVwGu9LOBjuX9wzmRMeQdBJtzEA==}
 
   html-url-attributes@3.0.1:
     resolution: {integrity: sha512-ol6UPyBWqsrO6EJySPz2O7ZSr856WDrEzM5zMqp+FJJLGMW35cLYmmZnl0vztAZxRUoNZJFTCohfjuIJ8I4QBQ==}
@@ -3923,15 +3917,12 @@ snapshots:
       '@standard-schema/utils': 0.3.0
       react-hook-form: 7.64.0(react@19.2.1)
 
-<<<<<<< HEAD
   '@hugeicons/core-free-icons@4.1.1': {}
 
   '@hugeicons/react@1.1.6(react@19.2.1)':
     dependencies:
       react: 19.2.1
 
-=======
->>>>>>> origin/main
   '@iconify/types@2.0.0': {}
 
   '@iconify/utils@3.0.2':
@@ -5762,11 +5753,8 @@ snapshots:
 
   graceful-fs@4.2.11: {}
 
-<<<<<<< HEAD
   gsap@3.15.0: {}
 
-=======
->>>>>>> origin/main
   hachure-fill@0.5.2: {}
 
   has-symbols@1.1.0: {}
@@ -5898,6 +5886,8 @@ snapshots:
       hast-util-parse-selector: 4.0.0
       property-information: 7.1.0
       space-separated-tokens: 2.0.2
+
+  hls.js@1.6.16: {}
 
   html-url-attributes@3.0.1: {}
 

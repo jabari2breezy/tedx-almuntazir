@@ -4,10 +4,8 @@
 @custom-variant dark (&:is(.dark *));
 
 /* ============================================================
-   TEDxAlMuntazirSchoolsYouth 2026 — "Borrowed Time"
-   Design: Neo-Brutalist Editorial with Kinetic Typography
-   Colors: #000000 (void), #EB0028 (urgency), #FFFFFF (clarity)
-   Fonts: Space Grotesk (display) + IBM Plex Mono (technical)
+   TEDxAlMuntazirSchoolsYouth 2026 — VOID Aesthetic
+   Minimal, cinematic, premium
    ============================================================ */
 
 @theme inline {
@@ -40,8 +38,7 @@
 }
 
 :root {
-  --radius: 0.25rem;
-  /* TED Brand Colors */
+  --radius: 0.75rem;
   --ted-red: #EB0028;
   --ted-black: #000000;
   --ted-white: #FFFFFF;
@@ -50,7 +47,6 @@
   --ted-gray: #1E1E1E;
   --ted-muted: #888888;
 
-  /* Semantic tokens — dark theme by default */
   --background: oklch(0.04 0 0);
   --foreground: oklch(0.97 0 0);
   --card: oklch(0.08 0 0);
@@ -91,10 +87,12 @@
 
   body {
     @apply bg-background text-foreground;
-    font-family: 'Space Grotesk', 'Helvetica Neue', sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     background-color: #000000;
     color: #FFFFFF;
     overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   button:not(:disabled),
@@ -106,7 +104,7 @@
     @apply cursor-pointer;
   }
 
-  /* Custom scrollbar */
+  /* Minimal scrollbar */
   ::-webkit-scrollbar {
     width: 4px;
   }
@@ -114,10 +112,16 @@
     background: #000000;
   }
   ::-webkit-scrollbar-thumb {
-    background: #EB0028;
+    background: rgba(235, 0, 40, 0.3);
+    border-radius: 2px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #ff1a3d;
+    background: #EB0028;
+  }
+
+  ::selection {
+    background: rgba(235, 0, 40, 0.3);
+    color: #fff;
   }
 }
 
@@ -130,84 +134,22 @@
     padding-right: 1rem;
   }
 
-  .flex {
-    min-height: 0;
-    min-width: 0;
-  }
-
   @media (min-width: 640px) {
-    .container {
-      padding-left: 1.5rem;
-      padding-right: 1.5rem;
-    }
+    .container { padding-left: 1.5rem; padding-right: 1.5rem; }
   }
 
   @media (min-width: 1024px) {
-    .container {
-      padding-left: 2rem;
-      padding-right: 2rem;
-      max-width: 1280px;
-    }
+    .container { padding-left: 2rem; padding-right: 2rem; max-width: 1280px; }
   }
 
-  /* TEDx specific utilities */
+  /* Typography */
   .font-display {
-    font-family: 'Space Grotesk', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-weight: 700;
   }
 
   .font-mono-ted {
     font-family: 'IBM Plex Mono', 'Space Mono', monospace;
-  }
-
-  .ted-red {
-    color: #EB0028;
-  }
-
-  .ted-red-bg {
-    background-color: #EB0028;
-  }
-
-  .red-rule {
-    height: 2px;
-    background: linear-gradient(90deg, #EB0028, transparent);
-    width: 100%;
-  }
-
-  .red-rule-full {
-    height: 1px;
-    background: #EB0028;
-    width: 100%;
-  }
-
-  /* Glassmorphism nav */
-  .glass-nav {
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(235, 0, 40, 0.15);
-  }
-
-  /* Grain texture overlay */
-  .grain-overlay::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-    opacity: 0.04;
-  }
-
-  /* Speaker card hover */
-  .speaker-card {
-    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-  }
-
-  .speaker-card:hover {
-    border-color: #EB0028;
-    transform: translateY(-4px);
-    box-shadow: 0 20px 60px rgba(235, 0, 40, 0.15);
   }
 
   /* Countdown digit */
@@ -216,63 +158,6 @@
     font-weight: 700;
     color: #EB0028;
     line-height: 1;
-  }
-
-  /* Red button */
-  .btn-ted {
-    background-color: #EB0028;
-    color: #FFFFFF;
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 600;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    padding: 0.75rem 2rem;
-    border: none;
-    transition: all 0.2s ease;
-  }
-
-  .btn-ted:hover {
-    background-color: #ff1a3d;
-    transform: translateY(-1px);
-  }
-
-  /* Outline button */
-  .btn-outline-ted {
-    background-color: transparent;
-    color: #FFFFFF;
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 600;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    padding: 0.75rem 2rem;
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    transition: all 0.2s ease;
-  }
-
-  .btn-outline-ted:hover {
-    border-color: #EB0028;
-    color: #EB0028;
-  }
-
-  /* Section label */
-  .section-label {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.75rem;
-    font-weight: 500;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: #EB0028;
-  }
-
-  /* Parallax container */
-  .parallax-container {
-    position: relative;
-    overflow: hidden;
-  }
-
-  /* Text reveal animation */
-  .reveal-text {
-    overflow: hidden;
   }
 
   /* Segment tab */
@@ -298,5 +183,54 @@
   .segment-tab:hover:not(.active) {
     border-color: rgba(235, 0, 40, 0.5);
     color: rgba(255, 255, 255, 0.8);
+  }
+
+  /* Speaker card hover */
+  .speaker-card {
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 1rem;
+  }
+
+  .speaker-card:hover {
+    border-color: rgba(235, 0, 40, 0.25);
+    transform: translateY(-2px);
+    box-shadow: 0 16px 48px rgba(235, 0, 40, 0.08);
+  }
+
+  /* Video background canvas */
+  .video-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .video-bg video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Smooth transitions for page changes */
+  .page-transition {
+    animation: pageIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  @keyframes pageIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Subtle pulse for live elements */
+  @keyframes subtlePulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+  }
+
+  .pulse-subtle {
+    animation: subtlePulse 3s ease-in-out infinite;
   }
 }
